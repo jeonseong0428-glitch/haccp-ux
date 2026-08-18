@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>화면 개선 요청서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="개발 요청서 — 스마트 HACCP 화면 사용성 개선">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<nav class="sitenav">
+<a class="brand" href="index.html">스마트 HACCP UX</a>
+<a class="n" href="index.html">홈</a>
+<a class="n" href="menu-proposal.html">메뉴 개편 시안</a>
+<a class="n" href="change-request.html" aria-current="page">개발 요청서</a>
+</nav>
+
+<style>
+  :root{
+    --bg:#EDF1EF; --surface:#FFFFFF; --surface-2:#F5F8F7;
+    --ink:#0F1A18; --ink-2:#3B4C48; --muted:#6C7D79;
+    --line:#D9E1DE; --line-2:#C3CFCB;
+    --accent:#0B6B5B; --accent-soft:#DDEDE9; --accent-line:#8CC5B9;
+    --crit:#A6231D; --crit-soft:#FAE4E2;
+    --warn:#94660A; --warn-soft:#FAF0D6;
+    --f-ui:"IBM Plex Sans KR","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+    --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1211; --surface:#121D1B; --surface-2:#182524;
+      --ink:#E9F0EE; --ink-2:#B7C6C2; --muted:#879994;
+      --line:#25332F; --line-2:#31423E;
+      --accent:#41BAA3; --accent-soft:#123029; --accent-line:#1F5B50;
+      --crit:#E0736B; --crit-soft:#331917;
+      --warn:#D5A63C; --warn-soft:#2E2611;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A1211; --surface:#121D1B; --surface-2:#182524;
+    --ink:#E9F0EE; --ink-2:#B7C6C2; --muted:#879994;
+    --line:#25332F; --line-2:#31423E;
+    --accent:#41BAA3; --accent-soft:#123029; --accent-line:#1F5B50;
+    --crit:#E0736B; --crit-soft:#331917;
+    --warn:#D5A63C; --warn-soft:#2E2611;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--f-ui); font-size:16.5px; line-height:1.75; font-weight:400;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .page{max-width:760px; margin:0 auto; padding:0 22px 80px}
+
+  /* head */
+  header{padding:60px 0 0}
+  .eyebrow{
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(30px,5vw,42px); font-weight:600; letter-spacing:-.03em;
+    line-height:1.2; margin:0 0 20px; text-wrap:balance;
+  }
+  .meta{
+    display:grid; grid-template-columns:auto 1fr; gap:6px 18px;
+    font-size:14.5px; color:var(--ink-2); margin:0 0 34px;
+    border-left:2px solid var(--accent-line); padding-left:16px;
+  }
+  .meta dt{color:var(--muted); font-size:13.5px; white-space:nowrap}
+  .meta dd{margin:0}
+  .meta a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-line); word-break:break-all}
+  .meta a:hover{background:var(--accent-soft)}
+
+  .keybox{
+    background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:8px; padding:20px 22px; margin:0 0 46px;
+  }
+  .keybox .k{
+    font-family:var(--f-mono); font-size:11.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 8px;
+  }
+  .keybox p{margin:0; font-size:17px; line-height:1.7; color:var(--ink)}
+  .keybox strong{font-weight:600}
+
+  h2{
+    font-size:14px; font-family:var(--f-mono); font-weight:500; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  h2::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  section{margin:0 0 52px}
+
+  /* request cards */
+  .req{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:24px 26px; margin:0 0 16px;
+  }
+  .req-h{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+  .num{
+    font-family:var(--f-mono); font-size:13px; font-weight:500; color:var(--accent);
+    background:var(--accent-soft); border-radius:5px; padding:2px 9px; flex:none;
+  }
+  .req-h h3{margin:0; font-size:20px; font-weight:600; letter-spacing:-.02em; flex:1; min-width:200px}
+  .pri{
+    font-size:12px; font-weight:500; border-radius:20px; padding:2px 11px; flex:none;
+    letter-spacing:.02em;
+  }
+  .pri.a{background:var(--crit-soft); color:var(--crit)}
+  .pri.b{background:var(--warn-soft); color:var(--warn)}
+  .pri.c{background:var(--surface-2); color:var(--muted); border:1px solid var(--line)}
+
+  .rows{display:flex; flex-direction:column; gap:14px}
+  .row{display:grid; grid-template-columns:76px 1fr; gap:14px; align-items:start}
+  .row .lab{
+    font-size:13px; color:var(--muted); padding-top:3px;
+    border-right:1px solid var(--line); padding-right:12px; text-align:right;
+  }
+  .row .val{margin:0; font-size:15.5px; line-height:1.7; color:var(--ink-2)}
+  .row .val strong{color:var(--ink); font-weight:600}
+  .row.now .val{color:var(--crit)}
+  .row.ask .val{color:var(--ink)}
+  .row .val ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:7px}
+  .row .val li{display:flex; gap:9px; align-items:flex-start}
+  .row .val li::before{
+    content:"□"; color:var(--accent); font-family:var(--f-mono); flex:none; line-height:1.7;
+  }
+  .alt{
+    margin-top:16px; padding:12px 14px; background:var(--surface-2);
+    border-radius:6px; font-size:14.5px; color:var(--ink-2); line-height:1.65;
+  }
+  .alt b{color:var(--ink); font-weight:600}
+
+  /* steps */
+  .steps{display:flex; flex-direction:column; gap:12px}
+  .step{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:18px 22px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:baseline;
+  }
+  .step .st{
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.1em; color:var(--accent);
+    white-space:nowrap;
+  }
+  .step h4{margin:0 0 4px; font-size:16.5px; font-weight:600; letter-spacing:-.015em}
+  .step p{margin:0; font-size:15px; color:var(--ink-2); line-height:1.65}
+
+  /* reply list */
+  ol.reply{margin:0; padding:0; list-style:none; counter-reset:r; display:flex; flex-direction:column; gap:13px}
+  ol.reply li{
+    counter-increment:r; display:grid; grid-template-columns:26px 1fr; gap:12px;
+    font-size:15.5px; color:var(--ink-2); line-height:1.7;
+  }
+  ol.reply li::before{
+    content:counter(r); font-family:var(--f-mono); font-size:12.5px; color:var(--accent);
+    background:var(--accent-soft); border-radius:50%; width:23px; height:23px;
+    display:grid; place-items:center; margin-top:4px;
+  }
+  ol.reply strong{color:var(--ink); font-weight:600}
+
+  .note{
+    font-size:14px; color:var(--muted); line-height:1.7; border-top:1px solid var(--line);
+    padding-top:18px; margin-top:8px;
+  }
+
+  @media print{
+    body{background:#fff; font-size:11pt}
+    .page{max-width:none; padding:0}
+    .req,.step{break-inside:avoid; box-shadow:none}
+    header{padding-top:0}
+  }
+  @media (max-width:560px){
+    .row{grid-template-columns:1fr; gap:5px}
+    .row .lab{text-align:left; border-right:0; border-left:2px solid var(--line); padding:0 0 0 10px}
+    .step{grid-template-columns:1fr; gap:6px}
+  }
+
+  .sitenav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+    padding:9px 18px; font-size:13.5px;
+    background:var(--surface,#fff); border-bottom:1px solid var(--line,#d9e1de);
+  }
+  .sitenav .brand{
+    font-weight:600; letter-spacing:-.01em; margin-right:14px;
+    color:var(--ink,#0f1a18); text-decoration:none;
+  }
+  .sitenav a.n{
+    color:var(--muted,#6c7d79); text-decoration:none;
+    padding:5px 11px; border-radius:5px;
+  }
+  .sitenav a.n:hover{background:var(--accent-soft,#ddede9); color:var(--accent,#0b6b5b)}
+  .sitenav a.n[aria-current="page"]{
+    background:var(--accent,#0b6b5b); color:var(--accent-ink,#fff); font-weight:500;
+  }
+</style>
+
+<div class="page">
+
+<header>
+  <p class="eyebrow">스마트 HACCP 시스템</p>
+  <h1>화면 사용성 개선 요청</h1>
+
+  <dl class="meta">
+    <dt>받는 곳</dt><dd>공급기업 개발 담당</dd>
+    <dt>요청일</dt><dd>2026-08-18</dd>
+    <dt>대상 화면</dt><dd>좌측 메뉴 및 전체 화면 이동 방식</dd>
+    <dt>참고 시안</dt>
+    <dd><a href="menu-proposal.html">클릭해서 동작을 확인할 수 있는 개선 시안</a></dd>
+  </dl>
+</header>
+
+<div class="keybox">
+  <p class="k">먼저 봐주실 것</p>
+  <p>
+    아래 요청은 대부분 <strong>“화면마다 고유한 주소(URL)를 갖게 한다”</strong> 하나로 해결됩니다.
+    지금은 어느 메뉴로 이동해도 주소창이 그대로여서, 뒤로가기·새로고침·즐겨찾기·새 탭이 전부 막혀 있습니다.
+    이 구조만 바뀌면 <strong>1번과 2번</strong>은 함께 풀립니다.
+  </p>
+</div>
+
+<section>
+  <h2>요청 사항</h2>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">01</span>
+      <h3>화면마다 고유 주소 부여</h3>
+      <span class="pri a">필수</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">메뉴를 눌러도 주소창이 바뀌지 않습니다. 그래서 새로고침(F5)하면 첫 화면으로 돌아가고, 특정 화면을 즐겨찾기하거나 링크로 공유할 수 없습니다.</p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">2단계 메뉴 화면마다 <strong>서로 다른 주소</strong>를 부여해 주세요.</p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>육안검사일지와 재고현황의 주소가 서로 다르다</li>
+          <li>재고현황 주소를 복사해 새 창에 붙여넣으면 재고현황이 바로 열린다</li>
+          <li>F5로 새로고침해도 보고 있던 화면이 유지된다</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">02</span>
+      <h3>뒤로가기와 현재 위치 표시</h3>
+      <span class="pri a">필수</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">직전 화면으로 돌아갈 방법이 없어, 매번 홈으로 나갔다가 메뉴를 처음부터 다시 찾아 들어가야 합니다.</p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">화면 상단에 <strong>← 뒤로 / → 앞으로</strong> 버튼과 <strong>현재 위치 경로</strong>(홈 › 원료수불 › 육안검사일지)를 넣어 주세요. 경로의 상위 항목을 누르면 그 메뉴로 이동합니다.</p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>육안검사일지 → 재고현황으로 이동한 뒤 뒤로가기를 누르면 육안검사일지로 돌아온다</li>
+          <li>브라우저 자체의 뒤로가기 버튼도 똑같이 동작한다</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">03</span>
+      <h3>좌측 메뉴 정리</h3>
+      <span class="pri b">권장</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">1단계 11개와 2단계 10개가 한꺼번에 펼쳐져 화면 밖으로 넘어갑니다. 2단계는 앞에 붙은 <span style="font-family:var(--f-mono)">-</span> 하나로만 구분돼 상하위 관계가 잘 보이지 않습니다.</p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <div class="val"><ul>
+          <li>평소에는 1단계만 보이고, 누른 그룹 하나만 펼쳐지게</li>
+          <li>메뉴 위쪽에 <strong>검색창</strong> 추가 (두 글자만 입력해도 걸러지도록)</li>
+          <li>2단계는 들여쓰기와 세로선으로 단계가 보이게</li>
+          <li>메뉴를 접어 아이콘만 남기는 버튼 추가</li>
+        </ul></div>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>노트북 화면(1366×768)에서 스크롤 없이 1단계 메뉴가 전부 보인다</li>
+          <li>검색창에 “재고”를 입력하면 재고 관련 메뉴만 남는다</li>
+        </ul></div>
+      </div>
+    </div>
+    <p class="alt">화면단만 수정하면 되는 항목이라 <b>가장 먼저, 가장 적은 공수로</b> 반영 가능할 것으로 봅니다.</p>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">04</span>
+      <h3>여러 화면 동시에 열기</h3>
+      <span class="pri c">협의</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">입고등록을 입력하다가 재고현황을 확인하러 가면, 입력하던 내용이 사라집니다.</p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">화면 상단에 <strong>탭</strong>을 두어 여러 화면을 동시에 열어두고, 탭을 오가도 입력값이 유지되게 해 주세요. (탭 최대 8개, 닫기·고정 가능)</p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>입고등록에 3건을 입력한 뒤 재고현황 탭으로 갔다가 돌아오면 입력값이 그대로 남아 있다</li>
+        </ul></div>
+      </div>
+    </div>
+    <p class="alt">
+      <b>공수가 크다면 대안으로</b> — 1번(고유 주소)만 반영되면, 메뉴를 <b>Ctrl+클릭 또는 우클릭으로 새 브라우저 탭에서 열기</b>가 가능해집니다.
+      이것만으로도 실무 불편은 상당 부분 해소되니, 이 방식으로 먼저 검토해 주셔도 좋습니다.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>진행 순서 제안</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="st">1차</span>
+      <div>
+        <h4>01 · 02 · 03</h4>
+        <p>주소 부여, 뒤로가기, 메뉴 정리. 현장에서 매일 겪는 불편이라 이번 단계에 함께 반영을 요청드립니다.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="st">2차</span>
+      <div>
+        <h4>04</h4>
+        <p>동시 탭. 공수와 일정 확인 후 별도 협의합니다. 위의 새 브라우저 탭 방식으로 대체 가능한지 함께 검토 부탁드립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>회신 부탁드릴 내용</h2>
+  <ol class="reply">
+    <li><strong>항목별 반영 가능 여부</strong>와, 어려운 항목은 그 사유</li>
+    <li><strong>항목별 예상 소요 기간</strong>과 반영 일정</li>
+    <li><strong>무상 개선 / 별도 비용</strong> 구분과 그 근거</li>
+    <li>현재 화면 전환이 어떤 방식(프레임 · 새로고침 · 단일 페이지)인지와, 주소 부여 시 <strong>영향 받는 범위</strong></li>
+  </ol>
+  <p class="note">
+    참고 시안은 동작 이해를 돕기 위한 예시이며, 화면 디자인이나 구현 방식을 지정하는 것은 아닙니다.
+    시안 속 데이터는 임의로 넣은 예시이고, 2단계 메뉴는 「원료수불/생산일지」만 실제 항목입니다.
+  </p>
+</section>
+
+</div>
+
+</body>
+</html>

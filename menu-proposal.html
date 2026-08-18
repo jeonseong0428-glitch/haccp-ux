@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>HACCP 메뉴 개편안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="메뉴 개편 시안 — 스마트 HACCP 화면 사용성 개선">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<nav class="sitenav">
+<a class="brand" href="index.html">스마트 HACCP UX</a>
+<a class="n" href="index.html">홈</a>
+<a class="n" href="menu-proposal.html" aria-current="page">메뉴 개편 시안</a>
+<a class="n" href="change-request.html">개발 요청서</a>
+</nav>
+
+<style>
+  :root{
+    --bg:#EDF1EF; --surface:#FFFFFF; --surface-2:#F5F8F7; --surface-3:#EAEFED;
+    --rail:#152220; --rail-2:#1E302C; --rail-3:#27403B;
+    --rail-ink:#CBD9D5; --rail-dim:#889A96;
+    --ink:#0F1A18; --ink-2:#3B4C48; --muted:#6C7D79;
+    --line:#D9E1DE; --line-2:#C3CFCB;
+    --accent:#0B6B5B; --accent-ink:#FFFFFF; --accent-soft:#DDEDE9; --accent-line:#8CC5B9;
+    --ok:#2C7A3E; --ok-soft:#E3F2E5;
+    --warn:#94660A; --warn-soft:#FAF0D6;
+    --crit:#A6231D; --crit-soft:#FAE4E2;
+    --shadow-2:0 1px 2px rgba(15,26,24,.06), 0 14px 34px -18px rgba(15,26,24,.35);
+    --r:6px;
+    --f-ui:"IBM Plex Sans KR","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+    --f-mono:"IBM Plex Mono","D2Coding",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1211; --surface:#121D1B; --surface-2:#182524; --surface-3:#1E2C2A;
+      --rail:#060D0C; --rail-2:#12211E; --rail-3:#1B2F2B;
+      --rail-ink:#CEDCD8; --rail-dim:#7C908C;
+      --ink:#E9F0EE; --ink-2:#B4C4C0; --muted:#83958F;
+      --line:#25332F; --line-2:#31423E;
+      --accent:#41BAA3; --accent-ink:#05201B; --accent-soft:#123029; --accent-line:#1F5B50;
+      --ok:#5CBE70; --ok-soft:#132D19;
+      --warn:#D5A63C; --warn-soft:#2E2611;
+      --crit:#E0736B; --crit-soft:#331917;
+      --shadow-2:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -18px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A1211; --surface:#121D1B; --surface-2:#182524; --surface-3:#1E2C2A;
+    --rail:#060D0C; --rail-2:#12211E; --rail-3:#1B2F2B;
+    --rail-ink:#CEDCD8; --rail-dim:#7C908C;
+    --ink:#E9F0EE; --ink-2:#B4C4C0; --muted:#83958F;
+    --line:#25332F; --line-2:#31423E;
+    --accent:#41BAA3; --accent-ink:#05201B; --accent-soft:#123029; --accent-line:#1F5B50;
+    --ok:#5CBE70; --ok-soft:#132D19;
+    --warn:#D5A63C; --warn-soft:#2E2611;
+    --crit:#E0736B; --crit-soft:#331917;
+    --shadow-2:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -18px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--f-ui); font-weight:400; font-size:15px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px}
+
+  /* ---------- pitch ---------- */
+  .pitch{padding:56px 0 30px}
+  .eyebrow{
+    font-family:var(--f-mono); font-size:11.5px; font-weight:500;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+    display:flex; align-items:center; gap:10px; margin:0 0 18px;
+  }
+  .eyebrow::after{content:""; height:1px; flex:1; background:var(--line-2)}
+  h1{
+    font-size:clamp(29px,4.4vw,46px); line-height:1.18; font-weight:600;
+    letter-spacing:-.03em; margin:0 0 16px; text-wrap:balance; max-width:17ch;
+  }
+  .lede{font-size:16.5px; color:var(--ink-2); max-width:64ch; margin:0; font-weight:300}
+  .lede b{font-weight:600; color:var(--ink)}
+
+  .probs{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:var(--r);
+    margin:34px 0 0; overflow:hidden}
+  .prob{background:var(--surface); padding:15px 17px}
+  .prob .t{font-family:var(--f-mono); font-size:11px; color:var(--crit); letter-spacing:.07em; margin-bottom:6px}
+  .prob .d{font-size:13.5px; color:var(--ink-2); line-height:1.5}
+  .prob .d b{color:var(--ink); font-weight:600}
+
+  /* ---------- stage ---------- */
+  .stage{padding:40px 0 10px}
+  .stage-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:14px; flex-wrap:wrap}
+  .stage-head h2{font-size:19px; font-weight:600; letter-spacing:-.02em; margin:0}
+  .hint{font-family:var(--f-mono); font-size:11.5px; color:var(--muted)}
+  kbd{
+    font-family:var(--f-mono); font-size:10.5px; background:var(--surface-3);
+    border:1px solid var(--line-2); border-bottom-width:2px; border-radius:4px;
+    padding:1px 5px; color:var(--ink-2); white-space:nowrap;
+  }
+
+  .frame{
+    background:var(--surface); border:1px solid var(--line-2); border-radius:9px;
+    box-shadow:var(--shadow-2); overflow:hidden;
+  }
+  .chrome{
+    display:flex; align-items:center; gap:8px; height:38px; padding:0 14px;
+    background:var(--surface-2); border-bottom:1px solid var(--line);
+  }
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--line-2)}
+  .chrome .url{
+    font-family:var(--f-mono); font-size:11px; color:var(--muted);
+    margin-left:10px; background:var(--surface); border:1px solid var(--line);
+    border-radius:20px; padding:3px 12px; flex:1; max-width:380px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  .shell{display:flex; min-height:600px}
+
+  /* ---------- rail ---------- */
+  .rail{
+    width:238px; flex:none; background:var(--rail); color:var(--rail-ink);
+    display:flex; flex-direction:column; transition:width .2s ease;
+  }
+  .rail.slim{width:56px}
+  .rail-top{padding:12px 12px 9px; border-bottom:1px solid rgba(255,255,255,.07)}
+  .brand{display:flex; align-items:center; gap:9px; padding:2px 4px 12px}
+  .brand .mark{
+    width:24px; height:24px; flex:none; border-radius:5px; background:var(--accent);
+    display:grid; place-items:center; color:#fff; font-family:var(--f-mono);
+    font-size:11px; font-weight:600;
+  }
+  .brand .nm{font-size:13px; font-weight:600; letter-spacing:-.01em; white-space:nowrap}
+  .rail.slim .brand .nm, .rail.slim .lbl, .rail.slim .sec-t,
+  .rail.slim .search, .rail.slim .caret, .rail.slim .star, .rail.slim .dot-n{display:none}
+  .rail.slim .brand{justify-content:center; padding:2px 0 12px}
+  .rail.slim .sub, .rail.slim .leaf{display:none}
+  .rail.slim .item{justify-content:center; padding:9px 0}
+  .rail.slim .rail-top{padding-bottom:3px}
+  .rail.slim .foot-btn{justify-content:center}
+  .rail.slim .foot-btn svg{transform:rotate(180deg)}
+
+  .search{position:relative}
+  .search input{
+    width:100%; background:var(--rail-2); border:1px solid transparent; color:var(--rail-ink);
+    font-family:var(--f-ui); font-size:13px; border-radius:5px; padding:7px 10px 7px 30px;
+  }
+  .search input::placeholder{color:var(--rail-dim)}
+  .search input:focus{outline:none; border-color:var(--accent); background:var(--rail-3)}
+  .search .mag{position:absolute; left:9px; top:8px; width:14px; height:14px; color:var(--rail-dim)}
+  .search .slash{
+    position:absolute; right:8px; top:7px; font-family:var(--f-mono); font-size:10px;
+    color:var(--rail-dim); border:1px solid rgba(255,255,255,.15); border-radius:3px; padding:0 4px;
+  }
+  .search input:focus ~ .slash{display:none}
+
+  .rail-scroll{flex:1; overflow-y:auto; padding:8px 8px 14px; scrollbar-width:thin}
+  .rail-scroll::-webkit-scrollbar{width:8px}
+  .rail-scroll::-webkit-scrollbar-thumb{background:var(--rail-3); border-radius:8px}
+
+  .sec-t{
+    font-family:var(--f-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--rail-dim); padding:13px 8px 6px; display:flex; align-items:center; gap:6px;
+  }
+  .sec-t::after{content:""; flex:1; height:1px; background:rgba(255,255,255,.07)}
+
+  .item{
+    display:flex; align-items:center; gap:9px; width:100%; text-align:left;
+    background:none; border:0; color:var(--rail-ink); font-family:var(--f-ui);
+    font-size:13.5px; padding:8px; border-radius:5px; cursor:pointer; transition:background .12s;
+  }
+  .item:hover{background:var(--rail-2)}
+  .item .ic{width:17px; height:17px; flex:none; color:var(--rail-dim)}
+  .item:hover .ic{color:var(--rail-ink)}
+  .item .lbl{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .item .caret{width:12px; height:12px; flex:none; color:var(--rail-dim); transition:transform .18s}
+  .item[aria-expanded="true"] .caret{transform:rotate(90deg)}
+  .item[aria-expanded="true"]{color:#fff}
+  .item[aria-expanded="true"] .ic{color:var(--accent)}
+  .item.on{background:var(--accent); color:var(--accent-ink); font-weight:500}
+  .item.on .ic{color:var(--accent-ink)}
+
+  .sub{display:none; margin:2px 0 6px 16px; padding-left:10px; border-left:1px solid rgba(255,255,255,.12)}
+  .sub.open{display:block}
+  .leaf{
+    display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+    background:none; border:0; color:var(--rail-dim); font-family:var(--f-ui);
+    font-size:13px; padding:6px 8px; border-radius:5px; cursor:pointer; transition:.12s;
+  }
+  .leaf:hover{background:var(--rail-2); color:var(--rail-ink)}
+  .leaf .lf{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .leaf.on{background:var(--accent); color:var(--accent-ink); font-weight:500}
+  .leaf .star{width:15px; height:15px; flex:none; opacity:0; color:var(--rail-dim); transition:.12s}
+  .leaf:hover .star{opacity:1}
+  .leaf .star.fav{opacity:1; color:#E8B341}
+  .leaf.on .star{color:var(--accent-ink)}
+  .leaf.on .star.fav{color:#FFDF8A}
+  .dot-n{
+    font-family:var(--f-mono); font-size:10px; background:var(--crit); color:#fff;
+    border-radius:9px; padding:0 5px; flex:none; font-variant-numeric:tabular-nums;
+  }
+  .leaf.on .dot-n, .item.on .dot-n{background:rgba(255,255,255,.26)}
+
+  .rail-foot{border-top:1px solid rgba(255,255,255,.07); padding:8px}
+  .foot-btn{
+    display:flex; align-items:center; gap:9px; width:100%; background:none; border:0;
+    color:var(--rail-dim); font-family:var(--f-ui); font-size:12.5px; padding:7px 8px;
+    border-radius:5px; cursor:pointer;
+  }
+  .foot-btn:hover{background:var(--rail-2); color:var(--rail-ink)}
+  .foot-btn svg{width:16px; height:16px; flex:none}
+  .empty-s{font-size:12.5px; color:var(--rail-dim); padding:14px 10px; line-height:1.5}
+
+  /* ---------- main ---------- */
+  .main{flex:1; min-width:0; display:flex; flex-direction:column; background:var(--surface-2)}
+
+  .tabbar{
+    display:flex; align-items:stretch; background:var(--surface-3);
+    border-bottom:1px solid var(--line); padding:6px 8px 0; overflow-x:auto; scrollbar-width:none;
+  }
+  .tabbar::-webkit-scrollbar{display:none}
+  .tab{
+    display:flex; align-items:center; gap:7px; flex:none; max-width:190px;
+    background:transparent; border:1px solid transparent; border-bottom:0;
+    border-radius:6px 6px 0 0; padding:7px 9px 7px 11px; cursor:pointer;
+    font-family:var(--f-ui); font-size:13px; color:var(--muted); position:relative; top:1px;
+  }
+  .tab:hover{background:var(--surface-2); color:var(--ink-2)}
+  .tab.on{background:var(--surface); border-color:var(--line); color:var(--ink); font-weight:500}
+  .tab.on::before{
+    content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:2px;
+    background:var(--accent); border-radius:2px 2px 0 0;
+  }
+  .tab .tl{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .tab .x{width:16px; height:16px; flex:none; border-radius:3px; display:grid; place-items:center; color:var(--muted); opacity:.55}
+  .tab .x:hover{background:var(--line-2); opacity:1; color:var(--ink)}
+  .tab .pin{width:13px; height:13px; flex:none; color:var(--accent)}
+  .tab-add{
+    flex:none; align-self:center; margin-left:4px; width:26px; height:26px; border-radius:5px;
+    border:1px dashed var(--line-2); background:none; color:var(--muted); cursor:pointer;
+    display:grid; place-items:center;
+  }
+  .tab-add:hover{border-style:solid; border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+
+  .crumbbar{
+    display:flex; align-items:center; gap:10px; padding:9px 16px;
+    background:var(--surface); border-bottom:1px solid var(--line); flex-wrap:wrap;
+  }
+  .navbtns{display:flex; gap:2px}
+  .nb{
+    width:28px; height:28px; border-radius:5px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink-2); cursor:pointer; display:grid; place-items:center;
+  }
+  .nb:hover:not(:disabled){background:var(--accent-soft); border-color:var(--accent-line); color:var(--accent)}
+  .nb:disabled{opacity:.32; cursor:default}
+  .nb svg{width:15px; height:15px}
+  .crumbs{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); min-width:0}
+  .crumbs .sep{color:var(--line-2)}
+  .crumbs .cur{color:var(--ink); font-weight:500}
+  .crumbs button{background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; border-bottom:1px dashed transparent}
+  .crumbs button:hover{color:var(--accent); border-bottom-color:var(--accent-line)}
+  .crumb-spacer{flex:1}
+  .ghost{
+    font-family:var(--f-ui); font-size:12.5px; color:var(--ink-2); background:var(--surface);
+    border:1px solid var(--line); border-radius:5px; padding:5px 10px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  .ghost:hover{border-color:var(--accent-line); color:var(--accent); background:var(--accent-soft)}
+  .ghost svg{width:13px; height:13px}
+
+  .content{flex:1; padding:20px 22px 26px; overflow:auto}
+  .page-h{display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin-bottom:16px; flex-wrap:wrap}
+  .page-h h3{margin:0; font-size:21px; font-weight:600; letter-spacing:-.02em}
+  .page-h .sub-t{font-size:12.5px; color:var(--muted); margin-top:3px}
+  .btn{
+    background:var(--accent); color:var(--accent-ink); border:0; border-radius:5px;
+    font-family:var(--f-ui); font-size:13px; font-weight:500; padding:8px 14px; cursor:pointer;
+  }
+  .btn:hover{filter:brightness(1.08)}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr)); gap:10px; margin-bottom:16px}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:11px 13px}
+  .stat .k{font-size:11px; color:var(--muted); font-family:var(--f-mono); letter-spacing:.05em}
+  .stat .v{font-size:22px; font-weight:600; font-family:var(--f-mono); font-variant-numeric:tabular-nums; letter-spacing:-.02em; margin-top:2px}
+  .stat.crit .v{color:var(--crit)}
+  .stat.ok .v{color:var(--ok)}
+
+  .tablewrap{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); overflow-x:auto}
+  table{border-collapse:collapse; width:100%; min-width:620px; font-size:13px}
+  th{
+    text-align:left; font-family:var(--f-mono); font-size:10.5px; font-weight:500;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--surface-2);
+  }
+  td{padding:10px 12px; border-bottom:1px solid var(--line); color:var(--ink-2); white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  tbody tr:hover td{background:var(--surface-2)}
+  td.num{font-family:var(--f-mono); font-variant-numeric:tabular-nums; color:var(--ink)}
+  .pill{display:inline-block; font-size:11.5px; font-weight:500; border-radius:20px; padding:2px 9px; line-height:1.5}
+  .pill.ok{background:var(--ok-soft); color:var(--ok)}
+  .pill.warn{background:var(--warn-soft); color:var(--warn)}
+  .pill.crit{background:var(--crit-soft); color:var(--crit)}
+
+  /* dashboard */
+  .dash{display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:12px}
+  .dcard{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+  .dcard.crit{border-color:var(--crit)}
+  .dhead{display:flex; align-items:center; gap:9px; padding:12px 14px; border-bottom:1px solid var(--line)}
+  .dhead .dt{font-size:14.5px; font-weight:600; flex:1}
+  .dhead .dn{
+    font-family:var(--f-mono); font-size:12px; font-weight:500; border-radius:20px;
+    padding:1px 9px; font-variant-numeric:tabular-nums;
+  }
+  .dcard.crit .dn{background:var(--crit-soft); color:var(--crit)}
+  .dcard.warn .dn{background:var(--warn-soft); color:var(--warn)}
+  .dcard.ok .dn{background:var(--ok-soft); color:var(--ok)}
+  .drow{
+    display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:none;
+    border:0; border-bottom:1px solid var(--line); padding:10px 14px; cursor:pointer;
+    font-family:var(--f-ui); font-size:13.5px; color:var(--ink-2);
+  }
+  .drow:last-child{border-bottom:0}
+  .drow:hover{background:var(--accent-soft); color:var(--accent)}
+  .drow .dl{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .drow .dm{font-family:var(--f-mono); font-size:11.5px; color:var(--muted); flex:none}
+  .drow:hover .dm{color:var(--accent)}
+  .dempty{padding:18px 14px; font-size:13px; color:var(--muted); text-align:center}
+
+  /* ---------- generic sections ---------- */
+  section.blk{padding:52px 0 0}
+  section.blk h2{font-size:22px; font-weight:600; letter-spacing:-.025em; margin:0 0 4px}
+  section.blk .sub-l{color:var(--muted); font-size:14.5px; margin:0 0 22px; max-width:62ch}
+
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:14px}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px}
+  .card .was{font-size:12.5px; color:var(--crit); background:var(--crit-soft); border-radius:4px; padding:6px 9px; margin-bottom:12px; display:block}
+  .card h4{margin:0 0 8px; font-size:16px; font-weight:600; letter-spacing:-.015em}
+  .card p{margin:0 0 12px; font-size:13.5px; color:var(--ink-2); line-height:1.6}
+  .card ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px}
+  .card li{font-size:13px; color:var(--ink-2); display:flex; gap:8px; align-items:flex-start; line-height:1.5}
+  .card li::before{content:"→"; color:var(--accent); font-family:var(--f-mono); flex:none}
+
+  /* IA mapping */
+  .iawrap{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); overflow-x:auto}
+  table.ia{min-width:560px}
+  table.ia td{white-space:normal; vertical-align:top; font-size:13.5px}
+  table.ia td.old{color:var(--muted); width:44%}
+  table.ia td.arw{color:var(--accent); font-family:var(--f-mono); width:26px; text-align:center}
+  table.ia td.new{color:var(--ink); font-weight:500}
+  table.ia td.new small{display:block; font-weight:400; color:var(--muted); font-size:12.5px; margin-top:2px}
+
+  /* code */
+  .codewrap{
+    background:var(--rail); border:1px solid var(--line-2); border-radius:var(--r);
+    overflow-x:auto; padding:16px 18px;
+  }
+  .codewrap pre{margin:0; font-family:var(--f-mono); font-size:12.5px; line-height:1.65; color:var(--rail-ink)}
+  .codewrap .c{color:var(--rail-dim)}
+  .codewrap .s{color:#9BD9C9}
+  .codewrap .k{color:#E8B341}
+
+  footer{border-top:1px solid var(--line); padding:22px 0 46px; margin-top:52px; color:var(--muted); font-size:12.5px}
+  footer code{font-family:var(--f-mono); font-size:11.5px; color:var(--ink-2)}
+
+  @media (max-width:820px){
+    .shell{flex-direction:column}
+    .rail, .rail.slim{width:100%; max-height:300px}
+  }
+
+  .sitenav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+    padding:9px 18px; font-size:13.5px;
+    background:var(--surface,#fff); border-bottom:1px solid var(--line,#d9e1de);
+  }
+  .sitenav .brand{
+    font-weight:600; letter-spacing:-.01em; margin-right:14px;
+    color:var(--ink,#0f1a18); text-decoration:none;
+  }
+  .sitenav a.n{
+    color:var(--muted,#6c7d79); text-decoration:none;
+    padding:5px 11px; border-radius:5px;
+  }
+  .sitenav a.n:hover{background:var(--accent-soft,#ddede9); color:var(--accent,#0b6b5b)}
+  .sitenav a.n[aria-current="page"]{
+    background:var(--accent,#0b6b5b); color:var(--accent-ink,#fff); font-weight:500;
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="pitch">
+    <p class="eyebrow">스마트 HACCP · 메뉴 구조 개편안</p>
+    <h1>메뉴를 뒤지지 않아도 되게</h1>
+    <p class="lede">
+      메뉴가 불편한 진짜 이유는 디자인이 아니라 <b>구성</b>입니다.
+      1단계 11개 중 <b>5개가 「CCP …」</b>, <b>4개에 「일지」</b>가 들어 있어 이름만으로는 구분이 안 되고,
+      매일 쓰는 화면과 1년에 한 번 쓰는 화면이 같은 자리에 있습니다.
+      아래는 <b>11개를 5개로 묶고 「오늘 할 일」을 신설한</b> 시안입니다. 직접 눌러보실 수 있습니다.
+    </p>
+
+    <div class="probs">
+      <div class="prob"><div class="t">문제 01</div><div class="d"><b>이름이 안 갈라짐</b> — CCP 5개, 일지 4개. 눈이 접두어를 반복해서 읽음</div></div>
+      <div class="prob"><div class="t">문제 02</div><div class="d"><b>빈도 무시</b> — 기초등록·공통관리가 매일 쓰는 일지와 같은 크기</div></div>
+      <div class="prob"><div class="t">문제 03</div><div class="d"><b>업무 순서와 반대</b> — 제일 먼저 하는 「작업제품선택」이 맨 아래</div></div>
+      <div class="prob"><div class="t">문제 04</div><div class="d"><b>할 일이 안 보임</b> — 미작성 일지가 있어도 메뉴는 전부 같은 회색</div></div>
+      <div class="prob"><div class="t">문제 05</div><div class="d"><b>왕복이 안 됨</b> — 뒤로가기 없음, 동시 탭 없음</div></div>
+    </div>
+  </header>
+
+  <section class="stage">
+    <div class="stage-head">
+      <h2>개선 시안</h2>
+      <div class="hint">
+        메뉴 클릭 = 탭 열기 · <kbd>Ctrl</kbd>+클릭 = 새 탭 · <kbd>Alt</kbd>+<kbd>←</kbd> 뒤로 · <kbd>/</kbd> 검색 · 탭 더블클릭 = 고정
+      </div>
+    </div>
+
+    <div class="frame">
+      <div class="chrome">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url" id="urlbar">k-haccp.example.co.kr/today</span>
+      </div>
+
+      <div class="shell">
+        <nav class="rail" id="rail" aria-label="주 메뉴">
+          <div class="rail-top">
+            <div class="brand">
+              <span class="mark">HA</span>
+              <span class="nm">스마트 HACCP</span>
+            </div>
+            <div class="search">
+              <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input id="q" type="search" placeholder="메뉴 검색 (예: 재고, 이탈)" autocomplete="off" aria-label="메뉴 검색">
+              <span class="slash">/</span>
+            </div>
+          </div>
+          <div class="rail-scroll" id="railScroll"></div>
+          <div class="rail-foot">
+            <button class="foot-btn" id="collapse" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/><path d="M20 4v16"/></svg>
+              <span class="lbl">메뉴 접기</span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="main">
+          <div class="tabbar" id="tabbar" role="tablist" aria-label="열린 화면"></div>
+
+          <div class="crumbbar">
+            <div class="navbtns">
+              <button class="nb" id="back" title="뒤로 (Alt+←)" aria-label="뒤로">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg>
+              </button>
+              <button class="nb" id="fwd" title="앞으로 (Alt+→)" aria-label="앞으로">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <div class="crumbs" id="crumbs"></div>
+            <span class="crumb-spacer"></span>
+            <button class="ghost" id="favBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+              <span id="favTxt">즐겨찾기</span>
+            </button>
+          </div>
+
+          <div class="content" id="content"></div>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:10px">
+      데이터는 예시입니다. 메뉴 이름과 묶음은 캡처에 보인 실제 메뉴를 재배치한 것입니다.
+    </p>
+  </section>
+
+  <section class="blk">
+    <h2>11개 → 5개, 어떻게 묶었나</h2>
+    <p class="sub-l">
+      화면을 지우거나 새로 만들지 않았습니다. <b>있는 화면을 업무 흐름대로 다시 묶고 이름만 줄였습니다.</b>
+      그룹 이름이 이미 「CCP」이므로, 안에 들어간 항목에서는 접두어를 뺍니다.
+    </p>
+    <div class="iawrap">
+      <table class="ia"><tbody id="iaBody"></tbody></table>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>무엇이 달라지나</h2>
+    <p class="sub-l">공수가 적은 순서로 적었습니다. 1~4번은 화면단 작업이라 서버 구조를 건드리지 않습니다.</p>
+    <div class="cards">
+      <div class="card">
+        <span class="was">지금: 미작성 일지가 있어도 메뉴는 전부 같은 회색</span>
+        <h4>1 · 「오늘 할 일」 신설</h4>
+        <p>미작성 일지, CCP 이탈 미조치, 재고 경고를 첫 화면에 모읍니다. 눌러서 바로 그 입력 화면으로 갑니다.</p>
+        <ul>
+          <li>메뉴를 뒤질 일 자체가 줄어듦 — 효과가 가장 큼</li>
+          <li>심사 직전 몰아서 확인하다 누락되는 일 방지</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="was">지금: 「CCP …」 5개, 「… 일지」 4개가 나란히</span>
+        <h4>2 · 그룹으로 묶고 접두어 제거</h4>
+        <p>1단계를 5개로 줄이고, 그룹 안에서는 중복되는 말을 뺍니다.</p>
+        <ul>
+          <li>CCP 이탈 이력 → <b>이탈 이력</b></li>
+          <li>스마트 HACCP CCP 모니터링 일지관리 → <b>모니터링 일지</b></li>
+          <li>글자 수가 절반으로 줄어 두 줄 접힘이 사라짐</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="was">지금: 「작업제품선택」이 메뉴 맨 아래</span>
+        <h4>3 · 업무 순서대로 재배열</h4>
+        <p>「생산·원료」 안을 실제 작업 순서대로 놓습니다.</p>
+        <ul>
+          <li>작업제품 선택 → 입고 → 육안검사 → 투입 → 생산 → 재고</li>
+          <li>신입이 순서를 틀릴 여지가 사라짐</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="was">지금: 매일 쓰는 화면을 매일 스크롤해서 찾음</span>
+        <h4>4 · 검색 · 즐겨찾기 · 건수 배지</h4>
+        <p>자주 쓰는 것은 위로 올리고, 처리할 것은 숫자로 보여줍니다.</p>
+        <ul>
+          <li>검색창에 두 글자 — <kbd>/</kbd> 로 바로 포커스</li>
+          <li>★ 즐겨찾기 3~5개 상단 고정 (사용자별 저장)</li>
+          <li>미처리 건수 배지 — 메뉴만 봐도 할 일이 보임</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="was">지금: 홈으로 나갔다 다시 들어가야 함</span>
+        <h4>5 · 화면별 고유 주소 + 뒤로가기</h4>
+        <p>화면마다 주소를 부여하면 뒤로가기·새로고침·즐겨찾기·링크 공유가 한꺼번에 풀립니다.</p>
+        <ul>
+          <li>브라우저 ←/→ 와 <kbd>Alt</kbd>+<kbd>←</kbd> 가 그대로 동작</li>
+          <li>F5 를 눌러도 보던 화면이 유지됨</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="was">지금: 화면을 옮기면 입력하던 내용이 사라짐</span>
+        <h4>6 · 동시 탭</h4>
+        <p>입고등록을 열어둔 채 재고현황을 확인하고 돌아옵니다. 탭마다 입력 상태가 유지됩니다.</p>
+        <ul>
+          <li>탭 최대 8개, 닫기·고정 가능</li>
+          <li>공수가 크면 <b>5번만으로 새 브라우저 탭 열기</b>가 대안</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>개발자 전달용 메뉴 정의</h2>
+    <p class="sub-l">그대로 복사해 쓰실 수 있게 새 메뉴 트리와 권장 주소 규칙을 붙였습니다. <code>badge</code> 는 미처리 건수를 내려줄 API 키입니다.</p>
+    <div class="codewrap"><pre id="codeBlock"></pre></div>
+  </section>
+
+  <footer>
+    <code>스마트 HACCP 메뉴 구조 개편안 · 화면 이름은 실제 메뉴 기준, 데이터는 예시</code>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ICON = {
+    home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/>',
+    clip:'<path d="M9 4h6v3H9z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 13l2 2 4-4"/>',
+    pulse:'<path d="M3 12h4l2.5-7 4 14L16 12h5"/>',
+    cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6L18 18M18 6l-1.4 1.4M7.4 16.6L6 18"/>'
+  };
+  function svg(n, c){
+    return '<svg class="'+(c||'ic')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" '+
+           'stroke-linecap="round" stroke-linejoin="round">'+(ICON[n]||ICON.clip)+'</svg>';
+  }
+
+  /* ============ new IA ============ */
+  var MENU = [
+    {id:'g-today', label:'오늘 할 일', icon:'home', path:'/today', single:true, children:[
+      {id:'p-today', label:'오늘 할 일', path:'/today'}
+    ]},
+    {id:'g-prod', label:'생산·원료', icon:'clip', path:'/production', children:[
+      {id:'p-sel',    label:'작업제품 선택', path:'/production/target'},
+      {id:'p-in',     label:'원재료 입고등록', path:'/production/receiving'},
+      {id:'p-visual', label:'육안검사일지', path:'/production/inspection', badge:2},
+      {id:'p-ledger', label:'원료 수불대장', path:'/production/ledger'},
+      {id:'p-use',    label:'원재료 사용등록', path:'/production/consumption'},
+      {id:'p-input',  label:'생산원료 투입', path:'/production/input'},
+      {id:'p-prod',   label:'생산일지', path:'/production/daily', badge:1},
+      {id:'p-trade',  label:'제품 거래기록서', path:'/production/shipment'},
+      {id:'p-stock',  label:'재고현황', path:'/production/stock'},
+      {id:'p-adj',    label:'재고조정', path:'/production/stock-adjust'}
+    ]},
+    {id:'g-ccp', label:'CCP 관리', icon:'pulse', path:'/ccp', children:[
+      {id:'p-monlive',label:'실시간 모니터링', path:'/ccp/live'},
+      {id:'p-devlist',label:'이탈 이력', path:'/ccp/deviation', badge:2},
+      {id:'p-smlog',  label:'모니터링 일지', path:'/ccp/log'},
+      {id:'p-raw',    label:'수집 데이터', path:'/ccp/data'},
+      {id:'p-eq',     label:'설비 관리', path:'/ccp/equipment'},
+      {id:'p-tab',    label:'태블릿 관리', path:'/ccp/tablet'}
+    ]},
+    {id:'g-hyg', label:'위생·일지', icon:'cal', path:'/hygiene', children:[
+      {id:'p-hacday', label:'일일 위생점검', path:'/hygiene/daily', badge:1},
+      {id:'p-hacclr', label:'세척·소독 일지', path:'/hygiene/sanitation'},
+      {id:'p-hacedu', label:'교육 일지', path:'/hygiene/education'},
+      {id:'p-appr',   label:'결재·승인 현황', path:'/hygiene/approval', badge:3}
+    ]},
+    {id:'g-set', label:'설정', icon:'gear', path:'/settings', children:[
+      {id:'p-item',   label:'품목·원부자재 등록', path:'/settings/items'},
+      {id:'p-vendor', label:'거래처 등록', path:'/settings/vendors'},
+      {id:'p-proc',   label:'공정 등록', path:'/settings/processes'},
+      {id:'p-logtpl', label:'일지 서식 관리', path:'/settings/forms'},
+      {id:'p-user',   label:'사용자·권한', path:'/settings/users'},
+      {id:'p-code',   label:'공통코드', path:'/settings/codes'}
+    ]}
+  ];
+
+  /* old -> new mapping shown in the IA table */
+  var IA = [
+    ['(없음)', '오늘 할 일', '신설 — 미작성 일지·이탈 미조치·재고 경고를 한 화면에'],
+    ['원료수불/생산일지', '생산·원료', '업무 순서대로 재배열, 「작업제품 선택」을 맨 위로'],
+    ['CCP 모니터링 · CCP 이탈 이력 · CCP 데이터 관리 · CCP 설비 관리 · CCP 태블릿 · 스마트 HACCP CCP 모니터링 일지관리',
+     'CCP 관리', '6개를 한 그룹으로. 안에서는 「CCP」 접두어 제거'],
+    ['HACCP 관리 일지 · 기록일지 관리', '위생·일지', '일지 성격끼리 통합, 결재 현황을 같이 둠'],
+    ['기초등록 · 공통 관리', '설정', '초기 세팅용이므로 맨 아래로, 시각적으로도 약하게']
+  ];
+
+  /* ============ pages ============ */
+  var PAGES = {
+    'p-today':{type:'dash', desc:'오늘 처리해야 할 것만 모았습니다.', cards:[
+      {t:'미작성 일지', n:4, tone:'crit', rows:[
+        ['육안검사일지 — 고춧가루 L-2608-113','p-visual','오늘 09:26 입고'],
+        ['생산일지 — 완제품 B(1kg)','p-prod','배치 B-2608-23'],
+        ['일일 위생점검 — 2공정','p-hacday','작성 기한 18:00'],
+        ['육안검사일지 — 정제수 L-2608-115','p-visual','오늘 11:04 입고']
+      ]},
+      {t:'CCP 이탈 미조치', n:2, tone:'crit', rows:[
+        ['CCP-1 가열 82.4℃ (기준 ≥85℃)','p-devlist','08-18 06:41'],
+        ['CCP-2 냉각 6.8℃ (기준 ≤5℃)','p-devlist','08-17 22:10']
+      ]},
+      {t:'재고 경고', n:3, tone:'warn', rows:[
+        ['고춧가루(국산) — 안전재고 미만','p-stock','54 / 80 kg'],
+        ['포장 필름 — 안전재고 미만','p-stock','12 / 15 롤'],
+        ['마늘 페이스트 — 유효기간 임박','p-stock','2026-09-02']
+      ]},
+      {t:'결재 대기', n:3, tone:'warn', rows:[
+        ['세척·소독 일지 08-17','p-appr','박현수 제출'],
+        ['교육 일지 08-15','p-appr','김도현 제출'],
+        ['생산일지 08-17','p-appr','박현수 제출']
+      ]}
+    ]},
+    'p-in':{
+      desc:'입고된 원재료의 수량·시험성적서·검수 결과를 등록합니다.', cta:'입고 등록',
+      stats:[['오늘 입고','7 건'],['검수 대기','2 건','crit'],['이번 주','31 건']],
+      cols:['입고일자','원재료명','거래처','LOT','수량','검수'],
+      rows:[
+        ['2026-08-18','정제소금','대성물산','L-2608-114','40 kg',['ok','합격']],
+        ['2026-08-18','고춧가루(국산)','한울농산','L-2608-113','120 kg',['warn','대기']],
+        ['2026-08-17','정제수','자체','L-2608-111','1,000 L',['ok','합격']],
+        ['2026-08-17','마늘 페이스트','청림식품','L-2608-110','60 kg',['ok','합격']],
+        ['2026-08-16','포장 필름','삼진팩','L-2608-104','20 롤',['crit','반품']]
+      ]},
+    'p-visual':{
+      desc:'입고 원재료의 이물·변색·포장상태를 육안으로 확인한 기록입니다.', cta:'검사 등록',
+      stats:[['오늘 검사','9 건'],['부적합','1 건','crit'],['적합률','98.2 %','ok']],
+      cols:['검사일시','품목','LOT','이물','변색','포장','판정','검사자'],
+      rows:[
+        ['08-18 09:12','정제소금','L-2608-114','없음','없음','양호',['ok','적합'],'이지은'],
+        ['08-18 09:26','고춧가루(국산)','L-2608-113','없음','경미','양호',['warn','재검'],'이지은'],
+        ['08-17 14:05','정제수','L-2608-111','없음','없음','양호',['ok','적합'],'박현수'],
+        ['08-16 10:40','포장 필름','L-2608-104','있음','—','파손',['crit','부적합'],'김도현']
+      ]},
+    'p-stock':{
+      desc:'원재료·반제품·완제품의 현재 재고와 유효기간을 조회합니다.', cta:'재고 실사',
+      stats:[['품목 수','48'],['유효기간 임박','3','crit'],['안전재고 미만','2','crit']],
+      cols:['품목','구분','현재고','안전재고','유효기간','상태'],
+      rows:[
+        ['정제소금','원재료','182 kg','100 kg','2027-02-11',['ok','정상']],
+        ['고춧가루(국산)','원재료','54 kg','80 kg','2026-11-30',['crit','부족']],
+        ['마늘 페이스트','원재료','96 kg','60 kg','2026-09-02',['warn','임박']],
+        ['포장 필름','부자재','12 롤','15 롤','—',['crit','부족']],
+        ['완제품 A(500g)','완제품','1,240 EA','800 EA','2027-01-20',['ok','정상']]
+      ]},
+    'p-devlist':{
+      desc:'한계기준을 벗어난 CCP 측정값과 조치 상태입니다.', cta:'조치 등록',
+      stats:[['미조치','2 건','crit'],['이번 달','6 건'],['평균 조치시간','21 분']],
+      cols:['발생일시','CCP','측정값','한계기준','조치상태','담당'],
+      rows:[
+        ['08-18 06:41','CCP-1 가열','82.4 ℃','≥ 85 ℃',['crit','미조치'],'—'],
+        ['08-17 22:10','CCP-2 냉각','6.8 ℃','≤ 5 ℃',['crit','미조치'],'—'],
+        ['08-15 13:02','CCP-1 가열','83.9 ℃','≥ 85 ℃',['ok','완료'],'박현수'],
+        ['08-12 09:55','CCP-3 금속검출','검출','미검출',['ok','완료'],'김도현']
+      ]},
+    'p-prod':{
+      desc:'일자별 생산 실적과 투입 원료를 기록합니다.', cta:'생산 등록',
+      stats:[['오늘 생산','2 배치'],['수율','96.4 %','ok'],['이번 주','11 배치']],
+      cols:['생산일자','제품','배치번호','생산량','투입량','수율'],
+      rows:[
+        ['2026-08-18','완제품 A(500g)','B-2608-22','620 EA','318 kg','96.8 %'],
+        ['2026-08-18','완제품 B(1kg)','B-2608-23','210 EA','215 kg','95.9 %'],
+        ['2026-08-17','완제품 A(500g)','B-2608-21','640 EA','327 kg','97.1 %']
+      ]},
+    'p-sel':{
+      desc:'오늘 작업할 제품을 먼저 선택합니다. 이후 모든 일지가 이 제품 기준으로 기록됩니다.', cta:'제품 선택',
+      stats:[['선택된 제품','완제품 A'],['등록 제품','12'],['오늘 배치','2']],
+      cols:['제품','규격','공정','최근 생산','선택'],
+      rows:[
+        ['완제품 A','500 g','가열-냉각-포장','2026-08-18',['ok','선택됨']],
+        ['완제품 B','1 kg','가열-냉각-포장','2026-08-18',['ok','가능']],
+        ['완제품 C','2 kg','가열-포장','2026-08-11',['ok','가능']]
+      ]}
+  };
+
+  function generic(label){
+    return {
+      desc: label + ' 화면입니다. 조회 조건을 선택한 뒤 목록에서 항목을 확인하세요.', cta:'신규 등록',
+      stats:[['전체','—'],['이번 달','—'],['미처리','—']],
+      cols:['일자','구분','내용','담당','상태'],
+      rows:[
+        ['2026-08-18','—','예시 데이터','이지은',['ok','정상']],
+        ['2026-08-17','—','예시 데이터','박현수',['ok','정상']],
+        ['2026-08-16','—','예시 데이터','김도현',['warn','확인']]
+      ]};
+  }
+
+  var IDX = {};
+  MENU.forEach(function(g){ g.children.forEach(function(c){ IDX[c.id] = {leaf:c, group:g}; }); });
+
+  var state = {
+    tabs:['p-today'], active:'p-today', pinned:{'p-today':true},
+    favs:{'p-visual':true,'p-stock':true,'p-devlist':true},
+    open:'g-prod', hist:['p-today'], hi:0, slim:false, q:''
+  };
+
+  var $ = function(i){ return document.getElementById(i); };
+  var railScroll=$('railScroll'), tabbar=$('tabbar'), content=$('content'),
+      crumbs=$('crumbs'), back=$('back'), fwd=$('fwd'), rail=$('rail'), urlbar=$('urlbar');
+
+  function navigate(pid, opts){
+    opts = opts || {};
+    if(!IDX[pid]) return;
+    if(state.tabs.indexOf(pid) === -1){
+      state.tabs.push(pid);
+      if(state.tabs.length > 8){
+        for(var i=0;i<state.tabs.length;i++){
+          if(!state.pinned[state.tabs[i]] && state.tabs[i] !== pid){ state.tabs.splice(i,1); break; }
+        }
+      }
+    }
+    if(opts.background){ renderTabs(); return; }
+    state.active = pid;
+    state.open = IDX[pid].group.id;
+    if(state.hist[state.hi] !== pid){
+      state.hist = state.hist.slice(0, state.hi+1);
+      state.hist.push(pid);
+      state.hi = state.hist.length - 1;
+    }
+    renderAll();
+  }
+
+  function go(d){
+    var n = state.hi + d;
+    if(n < 0 || n >= state.hist.length) return;
+    state.hi = n;
+    var pid = state.hist[n];
+    if(state.tabs.indexOf(pid) === -1) state.tabs.push(pid);
+    state.active = pid; state.open = IDX[pid].group.id;
+    renderAll();
+  }
+
+  function closeTab(pid, ev){
+    if(ev) ev.stopPropagation();
+    var i = state.tabs.indexOf(pid);
+    if(i === -1 || state.tabs.length === 1) return;
+    state.tabs.splice(i,1); delete state.pinned[pid];
+    if(state.active === pid){
+      var nx = state.tabs[Math.min(i, state.tabs.length-1)];
+      state.active = nx; state.open = IDX[nx].group.id;
+      state.hist = state.hist.slice(0, state.hi+1);
+      state.hist.push(nx); state.hi = state.hist.length - 1;
+    }
+    renderAll();
+  }
+
+  function hit(t){ return !state.q || t.toLowerCase().indexOf(state.q.toLowerCase()) !== -1; }
+
+  function leafBtn(leaf){
+    var b = document.createElement('button');
+    b.className = 'leaf' + (state.active === leaf.id ? ' on' : '');
+    b.type = 'button';
+    b.innerHTML = '<span class="lf">'+leaf.label+'</span>' +
+      (leaf.badge ? '<span class="dot-n">'+leaf.badge+'</span>' : '') +
+      '<svg class="star'+(state.favs[leaf.id]?' fav':'')+'" viewBox="0 0 24 24" fill="'+
+      (state.favs[leaf.id]?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">'+
+      '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>';
+    b.addEventListener('click', function(e){
+      if(e.target.closest('.star')){
+        e.stopPropagation();
+        if(state.favs[leaf.id]) delete state.favs[leaf.id]; else state.favs[leaf.id] = true;
+        renderRail(); renderFav(); return;
+      }
+      navigate(leaf.id, {background: e.ctrlKey || e.metaKey});
+    });
+    return b;
+  }
+
+  function renderRail(){
+    railScroll.innerHTML = '';
+    var q = state.q.trim();
+
+    var favIds = Object.keys(state.favs);
+    if(!q && favIds.length){
+      var s0 = document.createElement('div'); s0.className='sec-t'; s0.textContent='즐겨찾기';
+      railScroll.appendChild(s0);
+      favIds.forEach(function(id){ if(IDX[id]) railScroll.appendChild(leafBtn(IDX[id].leaf)); });
+    }
+
+    var s1 = document.createElement('div'); s1.className='sec-t'; s1.textContent = q ? '검색 결과' : '전체 메뉴';
+    railScroll.appendChild(s1);
+
+    var shown = 0;
+    MENU.forEach(function(g){
+      var kids = g.children.filter(function(c){ return hit(c.label); });
+      var gh = hit(g.label);
+      if(q && !gh && !kids.length) return;
+      shown++;
+
+      if(g.single){
+        var one = g.children[0];
+        var sb = document.createElement('button');
+        sb.className = 'item' + (state.active === one.id ? ' on' : '');
+        sb.type = 'button';
+        var tot = 0;
+        MENU.forEach(function(gg){ gg.children.forEach(function(c){ tot += (c.badge||0); }); });
+        sb.innerHTML = svg(g.icon) + '<span class="lbl">'+g.label+'</span>' +
+          (tot ? '<span class="dot-n">'+tot+'</span>' : '');
+        sb.addEventListener('click', function(e){ navigate(one.id, {background:e.ctrlKey||e.metaKey}); });
+        railScroll.appendChild(sb);
+        return;
+      }
+
+      var expanded = q ? true : (state.open === g.id);
+      var gb = document.createElement('button');
+      gb.className = 'item';
+      gb.type = 'button'; gb.title = g.label;
+      gb.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      var gsum = g.children.reduce(function(a,c){ return a + (c.badge||0); }, 0);
+      gb.innerHTML = svg(g.icon) + '<span class="lbl">'+g.label+'</span>' +
+        (gsum && !expanded ? '<span class="dot-n">'+gsum+'</span>' : '') +
+        '<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>';
+      gb.addEventListener('click', function(){
+        state.open = (state.open === g.id) ? null : g.id;
+        if(state.slim){ state.slim = false; rail.classList.remove('slim'); }
+        renderRail();
+      });
+      railScroll.appendChild(gb);
+
+      var sub = document.createElement('div');
+      sub.className = 'sub' + (expanded ? ' open' : '');
+      (q && !gh ? kids : g.children).forEach(function(c){ sub.appendChild(leafBtn(c)); });
+      railScroll.appendChild(sub);
+    });
+
+    if(q && !shown){
+      var e = document.createElement('div'); e.className = 'empty-s';
+      e.textContent = '「' + q + '」와(과) 일치하는 메뉴가 없습니다.';
+      railScroll.appendChild(e);
+    }
+  }
+
+  function renderTabs(){
+    tabbar.innerHTML = '';
+    state.tabs.slice().sort(function(a,b){
+      return (state.pinned[b]?1:0) - (state.pinned[a]?1:0);
+    }).forEach(function(pid){
+      var leaf = IDX[pid].leaf;
+      var t = document.createElement('div');
+      t.className = 'tab' + (state.active === pid ? ' on' : '');
+      t.setAttribute('role','tab'); t.setAttribute('tabindex','0');
+      t.setAttribute('aria-selected', state.active === pid ? 'true':'false');
+      t.innerHTML = (state.pinned[pid]
+          ? '<svg class="pin" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3l7 7-3 1-1 4-4-4-5 5-1-1 5-5-4-4 4-1z"/></svg>' : '') +
+        '<span class="tl">'+leaf.label+'</span>' +
+        (state.pinned[pid] ? '' :
+          '<span class="x" title="닫기"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>');
+      t.addEventListener('click', function(e){
+        if(e.target.closest('.x')){ closeTab(pid, e); return; }
+        if(state.active !== pid) navigate(pid);
+      });
+      t.addEventListener('keydown', function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); navigate(pid); }
+      });
+      t.addEventListener('auxclick', function(e){ if(e.button===1) closeTab(pid, e); });
+      t.addEventListener('dblclick', function(){
+        if(state.pinned[pid]) delete state.pinned[pid]; else state.pinned[pid] = true;
+        renderTabs();
+      });
+      tabbar.appendChild(t);
+    });
+    var add = document.createElement('button');
+    add.className='tab-add'; add.type='button'; add.title='메뉴에서 새 화면 열기';
+    add.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+    add.addEventListener('click', function(){ $('q').focus(); });
+    tabbar.appendChild(add);
+  }
+
+  function renderCrumbs(){
+    var e = IDX[state.active];
+    var html = '<button type="button" data-g="home">홈</button>';
+    if(!e.group.single){
+      html += '<span class="sep">›</span><button type="button" data-g="'+e.group.id+'">'+e.group.label+'</button>';
+    }
+    html += '<span class="sep">›</span><span class="cur">'+e.leaf.label+'</span>';
+    crumbs.innerHTML = html;
+    Array.prototype.forEach.call(crumbs.querySelectorAll('button'), function(b){
+      b.addEventListener('click', function(){
+        var g = b.getAttribute('data-g');
+        if(g === 'home'){ navigate('p-today'); return; }
+        state.open = g; renderRail(); railScroll.scrollTop = 0;
+      });
+    });
+    back.disabled = state.hi <= 0;
+    fwd.disabled  = state.hi >= state.hist.length - 1;
+    back.title = back.disabled ? '이전 화면 없음'
+      : '뒤로 — ' + IDX[state.hist[state.hi-1]].leaf.label + ' (Alt+←)';
+    urlbar.textContent = 'k-haccp.example.co.kr' + e.leaf.path;
+  }
+
+  function renderFav(){
+    var on = !!state.favs[state.active];
+    $('favTxt').textContent = on ? '즐겨찾기 해제' : '즐겨찾기';
+    $('favBtn').style.color = on ? 'var(--accent)' : '';
+    $('favBtn').style.borderColor = on ? 'var(--accent-line)' : '';
+  }
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  function renderContent(){
+    var e = IDX[state.active];
+    var p = PAGES[state.active] || generic(e.leaf.label);
+
+    if(p.type === 'dash'){
+      var h = '<div class="page-h"><div><h3>오늘 할 일</h3>' +
+        '<div class="sub-t">' + esc(p.desc) + ' · 2026-08-18 (화)</div></div></div><div class="dash">';
+      p.cards.forEach(function(c){
+        h += '<div class="dcard '+c.tone+'"><div class="dhead"><span class="dt">'+esc(c.t)+
+             '</span><span class="dn">'+c.n+' 건</span></div>';
+        c.rows.forEach(function(r){
+          h += '<button class="drow" type="button" data-go="'+r[1]+'">' +
+               '<span class="dl">'+esc(r[0])+'</span><span class="dm">'+esc(r[2])+'</span></button>';
+        });
+        h += '</div>';
+      });
+      h += '</div>';
+      content.innerHTML = h;
+      Array.prototype.forEach.call(content.querySelectorAll('.drow'), function(b){
+        b.addEventListener('click', function(ev){
+          navigate(b.getAttribute('data-go'), {background: ev.ctrlKey||ev.metaKey});
+        });
+      });
+      content.scrollTop = 0;
+      return;
+    }
+
+    var s = '<div class="page-h"><div><h3>'+esc(e.leaf.label)+'</h3>' +
+      '<div class="sub-t">'+esc(p.desc)+'</div></div>' +
+      '<button class="btn" type="button">+ '+esc(p.cta)+'</button></div><div class="stats">';
+    p.stats.forEach(function(x){
+      s += '<div class="stat '+(x[2]||'')+'"><div class="k">'+esc(x[0])+'</div><div class="v">'+esc(x[1])+'</div></div>';
+    });
+    s += '</div><div class="tablewrap"><table><thead><tr>';
+    p.cols.forEach(function(c){ s += '<th>'+esc(c)+'</th>'; });
+    s += '</tr></thead><tbody>';
+    p.rows.forEach(function(r){
+      s += '<tr>';
+      r.forEach(function(cell){
+        if(Array.isArray(cell)) s += '<td><span class="pill '+cell[0]+'">'+esc(cell[1])+'</span></td>';
+        else s += '<td'+(/^[\d,.\s]+(kg|L|EA|롤|건|%|℃)?$/.test(String(cell))?' class="num"':'')+'>'+esc(cell)+'</td>';
+      });
+      s += '</tr>';
+    });
+    s += '</tbody></table></div>';
+    content.innerHTML = s;
+    content.scrollTop = 0;
+  }
+
+  function renderAll(){ renderRail(); renderTabs(); renderCrumbs(); renderContent(); renderFav(); }
+
+  back.addEventListener('click', function(){ go(-1); });
+  fwd.addEventListener('click',  function(){ go(1); });
+  $('favBtn').addEventListener('click', function(){
+    if(state.favs[state.active]) delete state.favs[state.active]; else state.favs[state.active] = true;
+    renderRail(); renderFav();
+  });
+  $('collapse').addEventListener('click', function(){
+    state.slim = !state.slim;
+    rail.classList.toggle('slim', state.slim);
+    $('collapse').querySelector('.lbl').textContent = state.slim ? '펼치기' : '메뉴 접기';
+    renderRail();
+  });
+  $('q').addEventListener('input', function(e){ state.q = e.target.value; renderRail(); });
+  $('q').addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ e.target.value=''; state.q=''; renderRail(); e.target.blur(); }
+  });
+  document.addEventListener('keydown', function(e){
+    var tag = (document.activeElement.tagName||'').toLowerCase();
+    if(e.key === '/' && tag !== 'input' && tag !== 'textarea'){ e.preventDefault(); $('q').focus(); }
+    if(e.altKey && e.key === 'ArrowLeft'){ e.preventDefault(); go(-1); }
+    if(e.altKey && e.key === 'ArrowRight'){ e.preventDefault(); go(1); }
+  });
+
+  renderAll();
+
+  /* ---------- IA table ---------- */
+  $('iaBody').innerHTML = IA.map(function(r){
+    return '<tr><td class="old">'+esc(r[0])+'</td><td class="arw">→</td>' +
+           '<td class="new">'+esc(r[1])+'<small>'+esc(r[2])+'</small></td></tr>';
+  }).join('');
+
+  /* ---------- dev code block ---------- */
+  var lines = [];
+  lines.push('<span class="c">// 새 메뉴 트리 · path 는 화면별 고유 주소(요청 1번)</span>');
+  lines.push('<span class="k">const</span> MENU = [');
+  MENU.forEach(function(g, gi){
+    lines.push('  { id: <span class="s">"'+g.id+'"</span>, label: <span class="s">"'+g.label+'"</span>, path: <span class="s">"'+g.path+'"</span>' +
+      (g.single ? ', single: true' : '') + ', children: [');
+    g.children.forEach(function(c, ci){
+      lines.push('    { id: <span class="s">"'+c.id+'"</span>, label: <span class="s">"'+c.label+'"</span>, path: <span class="s">"'+c.path+'"</span>' +
+        (c.badge ? ', badge: <span class="s">"'+c.id+'"</span>' : '') + ' }' + (ci < g.children.length-1 ? ',' : ''));
+    });
+    lines.push('  ]}' + (gi < MENU.length-1 ? ',' : ''));
+  });
+  lines.push(']');
+  lines.push('');
+  lines.push('<span class="c">// 미처리 건수 — 배지·「오늘 할 일」이 같은 응답을 씁니다</span>');
+  lines.push('GET /api/todo/summary');
+  lines.push('  <span class="c">→</span> { <span class="s">"p-visual"</span>: 2, <span class="s">"p-prod"</span>: 1, <span class="s">"p-devlist"</span>: 2,');
+  lines.push('      <span class="s">"p-hacday"</span>: 1, <span class="s">"p-appr"</span>: 3 }');
+  $('codeBlock').innerHTML = lines.join('\n');
+})();
+</script>
+
+</body>
+</html>
