@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>현장 목소리</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="현장 워크숍 화이트보드에서 옮긴 사용자 발언과, 각 발언이 요구하는 개선">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#EDF1EF; --surface:#FFFFFF; --surface-2:#F5F8F7;
+    --ink:#0F1A18; --ink-2:#3B4C48; --muted:#6C7D79;
+    --line:#D9E1DE; --line-2:#C3CFCB;
+    --accent:#0B6B5B; --accent-ink:#FFFFFF; --accent-soft:#DDEDE9; --accent-line:#8CC5B9;
+    --ok:#2C7A3E; --ok-soft:#E3F2E5;
+    --warn:#94660A; --warn-soft:#FAF0D6;
+    --crit:#A6231D; --crit-soft:#FAE4E2;
+    --f-ui:"IBM Plex Sans KR","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+    --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1211; --surface:#121D1B; --surface-2:#182524;
+      --ink:#E9F0EE; --ink-2:#B7C6C2; --muted:#879994;
+      --line:#25332F; --line-2:#31423E;
+      --accent:#41BAA3; --accent-ink:#05201B; --accent-soft:#123029; --accent-line:#1F5B50;
+      --ok:#5CBE70; --ok-soft:#132D19;
+      --warn:#D5A63C; --warn-soft:#2E2611;
+      --crit:#E0736B; --crit-soft:#331917;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A1211; --surface:#121D1B; --surface-2:#182524;
+    --ink:#E9F0EE; --ink-2:#B7C6C2; --muted:#879994;
+    --line:#25332F; --line-2:#31423E;
+    --accent:#41BAA3; --accent-ink:#05201B; --accent-soft:#123029; --accent-line:#1F5B50;
+    --ok:#5CBE70; --ok-soft:#132D19;
+    --warn:#D5A63C; --warn-soft:#2E2611;
+    --crit:#E0736B; --crit-soft:#331917;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--f-ui); font-size:16px; line-height:1.72; font-weight:400;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+
+  .sitenav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+    padding:9px 18px; font-size:13.5px;
+    background:var(--surface); border-bottom:1px solid var(--line);
+  }
+  .sitenav .brand{font-weight:600; letter-spacing:-.01em; margin-right:14px; color:var(--ink); text-decoration:none}
+  .sitenav a.n{color:var(--muted); text-decoration:none; padding:5px 11px; border-radius:5px}
+  .sitenav a.n:hover{background:var(--accent-soft); color:var(--accent)}
+  .sitenav a.n[aria-current="page"]{background:var(--accent); color:var(--accent-ink); font-weight:500}
+
+  .page{max-width:880px; margin:0 auto; padding:0 22px 80px}
+
+  header{padding:60px 0 0}
+  .eyebrow{
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(29px,5vw,42px); font-weight:600; letter-spacing:-.03em;
+    line-height:1.18; margin:0 0 18px; text-wrap:balance; max-width:18ch;
+  }
+  .lede{font-size:16.5px; color:var(--ink-2); max-width:62ch; margin:0 0 30px; font-weight:300}
+  .lede b{font-weight:600; color:var(--ink)}
+
+  .srcnote{
+    background:var(--surface-2); border:1px solid var(--line); border-left:3px solid var(--accent-line);
+    border-radius:6px; padding:14px 17px; font-size:14px; color:var(--ink-2); line-height:1.65;
+    margin:0 0 46px;
+  }
+  .srcnote b{color:var(--ink); font-weight:600}
+
+  h2{
+    font-size:13.5px; font-family:var(--f-mono); font-weight:500; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted); margin:54px 0 20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  h2::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  /* theme block */
+  .theme{
+    background:var(--surface); border:1px solid var(--line); border-radius:9px;
+    padding:22px 24px; margin:0 0 14px;
+  }
+  .theme-h{display:flex; align-items:center; gap:11px; flex-wrap:wrap; margin-bottom:16px}
+  .theme-h h3{margin:0; font-size:19px; font-weight:600; letter-spacing:-.02em; flex:1; min-width:180px}
+  .badge{
+    font-size:12px; font-weight:500; border-radius:20px; padding:2px 11px; flex:none; white-space:nowrap;
+  }
+  .badge.done{background:var(--ok-soft); color:var(--ok)}
+  .badge.new{background:var(--warn-soft); color:var(--warn)}
+  .badge.out{background:var(--surface-2); color:var(--muted); border:1px solid var(--line)}
+
+  .quotes{
+    display:flex; flex-direction:column; gap:0;
+    border-left:2px solid var(--accent-line); padding-left:16px; margin:0 0 16px;
+  }
+  .quotes p{
+    margin:0; padding:5px 0; font-size:15.5px; color:var(--ink);
+    font-weight:300; line-height:1.6;
+  }
+  .quotes p::before{content:"“"; color:var(--accent); margin-right:2px}
+  .quotes p::after{content:"”"; color:var(--accent); margin-left:2px}
+
+  .means{
+    background:var(--surface-2); border-radius:6px; padding:13px 16px;
+    font-size:14.5px; color:var(--ink-2); line-height:1.65;
+  }
+  .means .k{
+    font-family:var(--f-mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); display:block; margin-bottom:5px;
+  }
+  .means b{color:var(--ink); font-weight:600}
+  .means a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-line)}
+  .means a:hover{background:var(--accent-soft)}
+
+  /* raw transcript */
+  .rawwrap{background:var(--surface); border:1px solid var(--line); border-radius:9px; overflow:hidden}
+  .rawhead{
+    padding:13px 20px; background:var(--surface-2); border-bottom:1px solid var(--line);
+    font-size:14px; font-weight:600;
+  }
+  .rawhead span{font-weight:400; color:var(--muted); font-size:13px; margin-left:8px}
+  .rawwrap ul{margin:0; padding:14px 20px 18px 20px; list-style:none; display:flex; flex-direction:column; gap:7px}
+  .rawwrap li{
+    font-size:14.5px; color:var(--ink-2); line-height:1.6;
+    display:flex; gap:9px; align-items:flex-start;
+  }
+  .rawwrap li::before{content:"–"; color:var(--muted); font-family:var(--f-mono); flex:none}
+  .rawwrap li.h{color:var(--ink); font-weight:600}
+  .rawwrap li.h::before{content:"■"; color:var(--accent); font-size:10px; line-height:1.9}
+
+  footer{border-top:1px solid var(--line); margin-top:54px; padding:22px 0 0; color:var(--muted); font-size:13px}
+  footer code{font-family:var(--f-mono); font-size:12px}
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="index.html">스마트 HACCP UX</a>
+  <a class="n" href="index.html">홈</a>
+  <a class="n" href="interview.html" aria-current="page">현장 목소리</a>
+  <a class="n" href="menu-proposal.html">메뉴 개편 시안</a>
+  <a class="n" href="change-request.html">개발 요청서</a>
+</nav>
+
+<div class="page">
+
+  <header>
+    <p class="eyebrow">현장 워크숍 · 사용자 발언 정리</p>
+    <h1>현장이 실제로 한 말</h1>
+    <p class="lede">
+      워크숍 화이트보드 두 장에 적힌 발언을 주제별로 묶고,
+      각 주제가 시스템에 무엇을 요구하는지 붙였습니다.
+      <b>메뉴가 불편하다는 이야기는 전체의 절반이 안 됩니다.</b>
+      나머지 절반은 <b>“무엇을 해야 하는지, 제대로 했는지 모르겠다”</b>는 이야기입니다.
+    </p>
+
+    <div class="srcnote">
+      <b>출처</b> — 현장 워크숍 화이트보드 사진 2장. 손글씨를 옮긴 것이라 일부 단어는 판독에 오차가 있을 수 있습니다.
+      원문 표현을 그대로 살렸고, 맞춤법만 최소한으로 다듬었습니다.
+    </div>
+  </header>
+
+  <h2>주제별 정리</h2>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>1 · 메뉴와 화면을 못 찾는다</h3>
+      <span class="badge done">이미 반영됨</span>
+    </div>
+    <div class="quotes">
+      <p>메뉴 찾기가 어렵다</p>
+      <p>화면도 복잡하고 메뉴 찾기도 힘들다</p>
+      <p>화면이 옆으로 열리지 않는다</p>
+      <p>원료수불 사용이 어렵다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      메뉴 검색·즐겨찾기·그룹 정리, 그리고 <b>여러 화면을 나란히 띄우기</b>.
+      “옆으로 열리지 않는다”는 곧 <b>동시 탭</b> 요구입니다 —
+      <a href="menu-proposal.html">시안</a>에 모두 들어가 있습니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>2 · 업무 순서와 메뉴 순서가 다르다</h3>
+      <span class="badge done">이미 반영됨</span>
+    </div>
+    <div class="quotes">
+      <p>입고의 순서가 있는데 시스템에서 그 순서에 맞게 메뉴가 구성되어 있지 않다</p>
+      <p>순서가 없어서 누군가가 정해줬으면 좋겠다</p>
+      <p>메뉴 들어갔을 때 어떤 버튼을 눌러서 작업해야 하는지 모름</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      메뉴를 업무 흐름대로 놓는 것에 더해, <b>화면에 들어간 뒤 다음에 무엇을 누를지</b>까지 알려줘야 합니다.
+      시안에서 「생산·원료」를 <b>작업제품 선택 → 입고 → 검사 → 투입 → 생산 → 재고</b> 순으로 재배열하고,
+      각 화면에 <b>다음 단계 안내</b>를 넣었습니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>3 · 무엇을 해야 하는지 모른다</h3>
+      <span class="badge new">이번에 새로 반영</span>
+    </div>
+    <div class="quotes">
+      <p>해야 할 일지 목록을 모른다</p>
+      <p>일지 누락에 대한 확인을 모른다</p>
+      <p>수시점검 대상 · 정기점검 대상 안내를 모른다</p>
+      <p>생산실적 보고서 제출 방법과 기간을 모른다</p>
+      <p>검교정 하는 법을 모른다</p>
+      <p>교육훈련 어떻게 하는지 모른다</p>
+      <p>3년 해썹 재갱신을 못 했다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      이것이 <b>가장 큰 덩어리</b>이고, 지금 시스템에 아예 없는 기능입니다.
+      매일 쓸 일지뿐 아니라 <b>기한이 정해진 법정 의무</b>(정기·수시점검, 검교정, 교육훈련, 생산실적 보고, 3년 재갱신)를
+      한곳에서 알려줘야 합니다.
+      시안에 <b>「오늘 할 일」의 기한 임박 카드</b>와 <b>「인증·법정일정」 메뉴</b>를 새로 넣었습니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>4 · 제대로 했는지 모른다</h3>
+      <span class="badge new">이번에 새로 반영</span>
+    </div>
+    <div class="quotes">
+      <p>일지 작성 시 맞는지 틀린지 모른다</p>
+      <p>데이터의 정확도가 눈에 보이지 않는다</p>
+      <p>재고 파악이 어렵다</p>
+      <p>입력 작업은 전화로 물어보는 게 빠르다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      저장은 되는데 <b>맞게 썼는지 알려주지 않습니다.</b>
+      그래서 결국 전화로 확인합니다 — 시스템이 전화보다 느리다는 뜻이고, 가장 뼈아픈 발언입니다.
+      저장 시 <b>기준 위반·빈칸·앞뒤 기록 불일치를 즉시 표시</b>하고,
+      일지마다 <b>작성 완료도</b>가 보여야 합니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>5 · 서식과 세팅을 우리가 못 고친다</h3>
+      <span class="badge new">이번에 새로 반영</span>
+    </div>
+    <div class="quotes">
+      <p>양식에 대한 수정이 어렵다 (변경 시)</p>
+      <p>일지에 대한 세팅도 어렵다</p>
+      <p>업체만의 문서 세팅이 번거롭다</p>
+      <p>수정이 어렵다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      기준서가 바뀌면 일지 서식도 바뀌는데, 그때마다 공급기업에 요청해야 합니다.
+      <b>항목 추가·삭제·순서 변경을 업체가 직접</b> 할 수 있어야 하고,
+      바꾼 서식이 <b>과거 기록을 깨뜨리지 않아야</b> 합니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>6 · 문서를 주고받기가 번거롭다</h3>
+      <span class="badge new">이번에 새로 반영</span>
+    </div>
+    <div class="quotes">
+      <p>엑셀 파일하고 PDF를 서로 옮길 때 한 번에 세팅이 되면 좋겠다</p>
+      <p>서류 관리 자동화</p>
+      <p>육류 설명도 어렵다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      일지·대장을 <b>엑셀/PDF로 한 번에 내보내고</b>, 기존 엑셀 자료를 <b>양식에 맞춰 올릴 수</b> 있어야 합니다.
+      심사 준비 때 서류를 손으로 옮겨 담는 시간이 그대로 줄어듭니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>7 · 아예 없는 기능</h3>
+      <span class="badge out">기능 추가 협의</span>
+    </div>
+    <div class="quotes">
+      <p>회수관리 없음</p>
+      <p>수출서류 모름</p>
+      <p>인증원이 막막하다 — 위생과, 축산과, 수출 관련 부서</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      회수(리콜) 관리와 수출서류는 <b>현재 시스템 범위 밖</b>입니다.
+      UX 개선과 성격이 다르므로 <b>별도 기능 추가로 분리해</b> 일정과 비용을 따로 협의하는 편이 낫습니다.
+    </div>
+  </div>
+
+  <div class="theme">
+    <div class="theme-h">
+      <h3>8 · 현장이 바라는 모습</h3>
+      <span class="badge out">방향</span>
+    </div>
+    <div class="quotes">
+      <p>‘누군가’가 대신 해준다</p>
+      <p>일지 작성 상태에 대한 안내 — 검토해서 누락분이 있으면 알려줬으면</p>
+      <p>AI가 중요 일정·문서, HACCP에 대해 알려주는 것</p>
+      <p>HWP 업로드하면 AI가 분석해서 어떻게 하면 되는지 알려주기</p>
+      <p>일이 많다</p>
+    </div>
+    <div class="means">
+      <span class="k">요구</span>
+      현장이 바라는 것은 기능 목록이 아니라 <b>“대신 챙겨주는 것”</b>입니다.
+      AI까지 가지 않더라도, <b>누락 알림 · 기한 안내 · 작성 검증</b> 세 가지만으로
+      체감의 상당 부분이 해결됩니다. 이 셋을 먼저 요청하시길 권합니다.
+    </div>
+  </div>
+
+  <h2>화이트보드 원문</h2>
+
+  <div class="rawwrap" style="margin-bottom:14px">
+    <div class="rawhead">보드 1 <span>프로그램 사용 관련</span></div>
+    <ul>
+      <li class="h">프로그램 사용방법 · 문의 — 편하게. 어렵다. 사용이 어렵다. 입력하기 힘들다</li>
+      <li>데이터의 정확도가 눈에 보이지 않는다</li>
+      <li>육류 설명도 어렵다 / 원료수불 사용이 어렵다</li>
+      <li>해야 할 일지 목록을 모른다 / 재고 파악이 어렵다 / 수정이 어렵다</li>
+      <li>입력 작업은 전화로 물어보는 게 빠르다 / 업체만의 문서 세팅이 번거롭다</li>
+      <li>메뉴 찾기가 어렵다 / 화면이 옆으로 열리지 않는다</li>
+      <li>입고의 순서가 있는데 시스템에서 그 순서에 맞게 메뉴가 구성되어 있지 않다</li>
+      <li>양식에 대한 수정이 어렵다(변경 시) / 일지에 대한 세팅도 어렵다</li>
+      <li>화면도 복잡하고 메뉴 찾기도 힘들다</li>
+      <li>엑셀 파일하고 PDF를 서로 옮길 때 한 번에 세팅이 되면 좋겠다</li>
+      <li>메뉴 들어갔을 때 어떤 버튼을 눌러서 작업해야 하는지 모름</li>
+      <li>회수관리 없음 / 서류 관리 자동화 / 수출서류 모름</li>
+    </ul>
+  </div>
+
+  <div class="rawwrap">
+    <div class="rawhead">보드 2 <span>바라는 것 · 모르는 것</span></div>
+    <ul>
+      <li class="h">바라는 것</li>
+      <li>순서가 없어서 누군가가 정해줬으면 좋겠다 → ‘누군가’가 대신 해준다</li>
+      <li>일지 작성 상태에 대한 안내 (검토해서 누락분이 있으면 알려줬으면)</li>
+      <li>GPS</li>
+      <li>AI가 중요 일정·문서, HACCP에 대해 알려주는 내용</li>
+      <li>HWP 업로드하면 AI가 분석해서 어떻게 하면 되는지 알려주기</li>
+      <li class="h">모르는 것 — 점검 대상 안내</li>
+      <li>수시점검 대상 / 정기점검 대상 안내 모름</li>
+      <li>생산실적 보고서 제출 방법·기간 모름</li>
+      <li>검교정 하는 법 모름</li>
+      <li>일지 누락에 대한 확인 모름</li>
+      <li>교육훈련 어떻게 하는지 모름</li>
+      <li>일지 작성 시 맞는지 틀린지 모름</li>
+      <li>일이 많다</li>
+      <li>3년 해썹 재갱신 못 함</li>
+      <li>인증원이 막막하다 — 위생과, 축산과, 수출 관련</li>
+    </ul>
+  </div>
+
+  <footer>
+    <code>손글씨를 옮긴 기록이므로 일부 단어는 판독 오차가 있을 수 있습니다</code>
+  </footer>
+
+</div>
+</body>
+</html>

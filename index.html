@@ -124,6 +124,7 @@
 <nav class="sitenav">
   <a class="brand" href="index.html">스마트 HACCP UX</a>
   <a class="n" href="index.html" aria-current="page">홈</a>
+  <a class="n" href="interview.html">현장 목소리</a>
   <a class="n" href="menu-proposal.html">메뉴 개편 시안</a>
   <a class="n" href="change-request.html">개발 요청서</a>
 </nav>
@@ -134,20 +135,31 @@
     <p class="eyebrow">스마트 HACCP 시스템 · 화면 사용성</p>
     <h1>메뉴를 뒤지지 않아도 되게</h1>
     <p class="lede">
-      현재 시스템은 메뉴가 세로로 길게 펼쳐져 있고, 뒤로가기가 없어 매번 홈으로 돌아가야 하며,
-      화면을 옮기면 입력하던 내용이 사라집니다.
-      여기에는 <b>직접 눌러볼 수 있는 개선 시안</b>과, 공급기업에 그대로 전달할 수 있는
-      <b>개발 요청서</b>가 있습니다.
+      현장 워크숍에서 나온 이야기의 절반은 메뉴가 아니라
+      <b>“무엇을 해야 하는지, 제대로 했는지 모르겠다”</b>였습니다.
+      여기에는 <b>현장 발언 정리</b>, <b>직접 눌러볼 수 있는 개선 시안</b>,
+      그리고 공급기업에 그대로 전달할 수 있는 <b>개발 요청서</b>가 있습니다.
     </p>
   </header>
 
   <h2>문서</h2>
   <div class="docs">
+    <a class="doc" href="interview.html">
+      <div class="tag">근거</div>
+      <h3>현장 목소리</h3>
+      <p>
+        워크숍 화이트보드 두 장의 발언을 주제 8개로 묶고, 각 주제가 시스템에
+        무엇을 요구하는지 정리했습니다. 아래 시안과 요청서가 모두 여기서 나왔습니다.
+        원문 전사도 함께 실었습니다.
+      </p>
+      <span class="go">열어보기 →</span>
+    </a>
+
     <a class="doc" href="menu-proposal.html">
       <div class="tag">프로토타입</div>
       <h3>메뉴 개편 시안</h3>
       <p>
-        1단계 메뉴 11개를 5개로 묶고 「오늘 할 일」 화면을 신설한 시안입니다.
+        1단계 메뉴 11개를 5개로 묶고 「오늘 할 일」·「인증·법정일정」을 신설한 시안입니다.
         검색·즐겨찾기·동시 탭·뒤로가기가 실제로 동작하므로 눌러서 확인하실 수 있습니다.
         맨 아래에 개발자 전달용 메뉴 정의(JSON)와 주소 규칙이 있습니다.
       </p>
@@ -167,18 +179,28 @@
 
   <h2>무엇이 문제인가</h2>
   <div class="probs">
-    <div class="prob"><div class="t">문제 01</div><div class="d"><b>이름이 안 갈라짐</b> — 「CCP …」 5개, 「… 일지」 4개가 나란히</div></div>
-    <div class="prob"><div class="t">문제 02</div><div class="d"><b>빈도 무시</b> — 매일 쓰는 화면과 1년에 한 번 쓰는 화면이 같은 자리</div></div>
-    <div class="prob"><div class="t">문제 03</div><div class="d"><b>업무 순서와 반대</b> — 제일 먼저 하는 「작업제품선택」이 맨 아래</div></div>
-    <div class="prob"><div class="t">문제 04</div><div class="d"><b>할 일이 안 보임</b> — 미작성 일지가 있어도 메뉴는 전부 같은 회색</div></div>
-    <div class="prob"><div class="t">문제 05</div><div class="d"><b>왕복이 안 됨</b> — 뒤로가기 없음, 동시 탭 없음</div></div>
+    <div class="prob"><div class="t">찾기</div><div class="d"><b>메뉴를 못 찾는다</b> — 「CCP …」 5개, 「… 일지」 4개가 나란히</div></div>
+    <div class="prob"><div class="t">순서</div><div class="d"><b>업무 순서와 반대</b> — 제일 먼저 하는 「작업제품선택」이 맨 아래</div></div>
+    <div class="prob"><div class="t">할 일</div><div class="d"><b>뭘 해야 할지 모른다</b> — 미작성 일지도, 다가온 법정 기한도 안 보임</div></div>
+    <div class="prob"><div class="t">검증</div><div class="d"><b>맞게 썼는지 모른다</b> — 저장은 되는데 틀렸다고 알려주지 않음</div></div>
+    <div class="prob"><div class="t">서식</div><div class="d"><b>우리가 못 고친다</b> — 기준서가 바뀌어도 서식 수정을 요청해야 함</div></div>
+    <div class="prob"><div class="t">왕복</div><div class="d"><b>화면을 오갈 수 없다</b> — 뒤로가기 없음, 옆으로 나란히 열리지 않음</div></div>
+  </div>
+
+  <h2>가장 뼈아픈 한 마디</h2>
+  <div class="note" style="font-size:17px; line-height:1.65; color:var(--ink)">
+    “입력 작업은 <b>전화로 물어보는 게 빠르다</b>”
+    <div style="font-size:14px; color:var(--muted); margin-top:8px; line-height:1.6">
+      시스템이 전화보다 느리다는 뜻입니다. 기능이 없어서가 아니라,
+      맞게 했는지 알려주지 않아서 결국 사람에게 확인하게 됩니다.
+    </div>
   </div>
 
   <h2>읽는 순서</h2>
   <div class="note">
-    <b>시안을 먼저 눌러보시고</b>, 그다음 요청서를 보시는 편이 이해가 빠릅니다.
-    요청서의 각 항목에는 <b>확인 방법</b>이 붙어 있어, 개선됐다는 회신을 받았을 때
-    그것만 눌러보면 실제로 반영됐는지 검증할 수 있습니다.
+    <b>현장 목소리 → 시안 → 요청서</b> 순서를 권합니다.
+    요청서의 각 항목에는 <b>현장 발언 근거</b>와 <b>확인 방법</b>이 붙어 있어,
+    개선됐다는 회신을 받았을 때 그것만 눌러보면 실제로 반영됐는지 검증할 수 있습니다.
   </div>
 
   <footer>

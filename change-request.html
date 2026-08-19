@@ -14,7 +14,8 @@
 <nav class="sitenav">
 <a class="brand" href="index.html">스마트 HACCP UX</a>
 <a class="n" href="index.html">홈</a>
-<a class="n" href="menu-proposal.html">메뉴 개편 시안</a>
+<a class="n" href="interview.html">현장 목소리</a>
+  <a class="n" href="menu-proposal.html">메뉴 개편 시안</a>
 <a class="n" href="change-request.html" aria-current="page">개발 요청서</a>
 </nav>
 
@@ -209,8 +210,10 @@
 
   <dl class="meta">
     <dt>받는 곳</dt><dd>공급기업 개발 담당</dd>
-    <dt>요청일</dt><dd>2026-08-18</dd>
-    <dt>대상 화면</dt><dd>좌측 메뉴 및 전체 화면 이동 방식</dd>
+    <dt>요청일</dt><dd>2026-08-19</dd>
+    <dt>대상</dt><dd>좌측 메뉴, 화면 이동 방식, 일지 작성 지원</dd>
+    <dt>근거</dt>
+    <dd><a href="interview.html">현장 워크숍 사용자 발언 정리</a></dd>
     <dt>참고 시안</dt>
     <dd><a href="menu-proposal.html">클릭해서 동작을 확인할 수 있는 개선 시안</a></dd>
   </dl>
@@ -219,9 +222,12 @@
 <div class="keybox">
   <p class="k">먼저 봐주실 것</p>
   <p>
-    아래 요청은 대부분 <strong>“화면마다 고유한 주소(URL)를 갖게 한다”</strong> 하나로 해결됩니다.
-    지금은 어느 메뉴로 이동해도 주소창이 그대로여서, 뒤로가기·새로고침·즐겨찾기·새 탭이 전부 막혀 있습니다.
-    이 구조만 바뀌면 <strong>1번과 2번</strong>은 함께 풀립니다.
+    요청은 두 덩어리입니다. <strong>1~4번(화면 이동·메뉴)</strong>은 대부분
+    <strong>“화면마다 고유한 주소(URL)를 갖게 한다”</strong> 하나로 함께 풀립니다.
+    <strong>5~7번</strong>은 현장 워크숍에서 새로 확인된 것으로,
+    <strong>“무엇을 해야 하는지, 제대로 했는지 알려달라”</strong>는 요구입니다.
+    현장에서 나온 <strong>“입력 작업은 전화로 물어보는 게 빠르다”</strong>는 말이
+    5~7번을 요청하는 이유입니다.
   </p>
 </div>
 
@@ -337,6 +343,114 @@
       이것만으로도 실무 불편은 상당 부분 해소되니, 이 방식으로 먼저 검토해 주셔도 좋습니다.
     </p>
   </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">05</span>
+      <h3>해야 할 일지와 누락 알림</h3>
+      <span class="pri a">필수</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">
+          오늘 어떤 일지를 써야 하는지 시스템이 알려주지 않습니다.
+          현장 발언 — <b>“해야 할 일지 목록을 모른다”</b>, <b>“일지 누락에 대한 확인을 모른다”</b>.
+        </p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">
+          로그인 직후 첫 화면에 <strong>오늘 써야 할 일지</strong>와
+          <strong>기한이 지난 미작성 건</strong>을 목록으로 보여주고,
+          누르면 해당 입력 화면으로 바로 이동하게 해 주세요.
+          좌측 메뉴에도 <strong>미처리 건수</strong>를 숫자로 표시해 주세요.
+        </p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>어제 일지를 일부러 비워두면, 오늘 첫 화면에 그 건이 표시된다</li>
+          <li>그 줄을 누르면 해당 일지 입력 화면이 바로 열린다</li>
+          <li>작성을 마치면 목록과 메뉴 배지에서 사라진다</li>
+        </ul></div>
+      </div>
+    </div>
+    <p class="alt">
+      현장 요구 중 <b>가장 반복해서 나온 항목</b>입니다. 메뉴 개선보다 체감이 큽니다.
+    </p>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">06</span>
+      <h3>작성 내용 검증</h3>
+      <span class="pri a">필수</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">
+          저장은 되지만 맞게 썼는지 알려주지 않아, 결국 전화로 확인합니다.
+          현장 발언 — <b>“일지 작성 시 맞는지 틀린지 모른다”</b>,
+          <b>“데이터의 정확도가 눈에 보이지 않는다”</b>,
+          <b>“입력 작업은 전화로 물어보는 게 빠르다”</b>.
+        </p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">
+          저장할 때 <strong>한계기준 위반·필수 빈칸·앞뒤 기록 불일치</strong>를 그 자리에서 표시해 주세요.
+          막는 것이 아니라 <strong>“이 값은 기준을 벗어났습니다”</strong>처럼 알려주는 방식이면 됩니다.
+        </p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>가열 온도를 한계기준 미만으로 입력하면 저장 시 경고가 표시된다</li>
+          <li>필수 항목을 비우고 저장하면 어느 칸인지 화면에서 짚어준다</li>
+          <li>사용량이 재고보다 많으면 그 자리에서 알려준다</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">07</span>
+      <h3>법정 일정 안내</h3>
+      <span class="pri b">권장</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">
+          기한이 있는 의무를 시스템이 챙겨주지 않아 담당자가 기억에 의존합니다.
+          현장 발언 — <b>“정기·수시점검 대상 안내를 모른다”</b>,
+          <b>“생산실적 보고서 제출 방법·기간을 모른다”</b>,
+          <b>“검교정 하는 법을 모른다”</b>, <b>“3년 해썹 재갱신을 못 했다”</b>.
+        </p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">
+          <strong>정기·수시점검 / 검교정 / 교육훈련 / 생산실적 보고 / 인증 갱신</strong>의
+          다음 기한을 한 화면에 모으고, <strong>기한이 다가오면 첫 화면에 표시</strong>해 주세요.
+        </p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>인증 만료일을 등록하면 남은 기간이 첫 화면에 표시된다</li>
+          <li>검교정 주기를 넘긴 설비가 목록에 뜬다</li>
+        </ul></div>
+      </div>
+    </div>
+    <p class="alt">
+      <b>회수(리콜) 관리와 수출서류</b>는 현재 시스템에 없는 기능입니다.
+      성격이 다르므로 이 요청서와 분리해 별도 협의를 요청드립니다.
+    </p>
+  </div>
 </section>
 
 <section>
@@ -345,15 +459,36 @@
     <div class="step">
       <span class="st">1차</span>
       <div>
-        <h4>01 · 02 · 03</h4>
-        <p>주소 부여, 뒤로가기, 메뉴 정리. 현장에서 매일 겪는 불편이라 이번 단계에 함께 반영을 요청드립니다.</p>
+        <h4>05 · 06 — 일지 누락 알림과 작성 검증</h4>
+        <p>현장 체감이 가장 큰 항목입니다. “전화로 물어보는 게 빠르다”는 상황을 없애는 것이 이번 개선의 목표입니다.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="st">1차</span>
+      <div>
+        <h4>01 · 02 · 03 — 주소 부여, 뒤로가기, 메뉴 정리</h4>
+        <p>매일 겪는 불편이고 화면단 작업 비중이 커서, 같은 단계에 함께 반영을 요청드립니다.</p>
       </div>
     </div>
     <div class="step">
       <span class="st">2차</span>
       <div>
-        <h4>04</h4>
-        <p>동시 탭. 공수와 일정 확인 후 별도 협의합니다. 위의 새 브라우저 탭 방식으로 대체 가능한지 함께 검토 부탁드립니다.</p>
+        <h4>07 — 법정 일정 안내</h4>
+        <p>기한 데이터를 어디서 받을지(업체 입력 / 인증원 연계) 먼저 정해야 하므로 다음 단계로 둡니다.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="st">2차</span>
+      <div>
+        <h4>04 — 동시 탭</h4>
+        <p>공수와 일정 확인 후 별도 협의합니다. 위의 새 브라우저 탭 방식으로 대체 가능한지 함께 검토 부탁드립니다.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="st">별건</span>
+      <div>
+        <h4>회수관리 · 수출서류 · 서식 직접 수정</h4>
+        <p>현재 시스템에 없거나 범위가 큰 기능입니다. 이 요청서와 분리해 별도 견적·일정으로 협의를 요청드립니다.</p>
       </div>
     </div>
   </div>
