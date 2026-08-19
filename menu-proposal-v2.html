@@ -195,6 +195,11 @@
   .leaf:hover{background:var(--rail-2); color:var(--rail-ink)}
   .leaf.on{background:var(--accent); color:var(--accent-ink); font-weight:500}
   .leaf .lf{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .leaf .star{width:15px; height:15px; flex:none; opacity:0; color:var(--rail-dim); transition:.12s}
+  .leaf:hover .star{opacity:1}
+  .leaf .star.fav{opacity:1; color:#E8B341}
+  .leaf.on .star{color:var(--accent-ink)}
+  .leaf.on .star.fav{color:#FFDF8A}
   .dot-n{
     font-family:var(--f-mono); font-size:10px; background:var(--crit); color:#fff;
     border-radius:9px; padding:0 5px; flex:none; font-variant-numeric:tabular-nums;
@@ -445,6 +450,15 @@
   .card ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px}
   .card li{font-size:13px; color:var(--ink-2); display:flex; gap:8px; align-items:flex-start; line-height:1.5}
   .card li::before{content:"→"; color:var(--accent); font-family:var(--f-mono); flex:none}
+
+  .codewrap{
+    background:var(--rail); border:1px solid var(--line-2); border-radius:var(--r);
+    overflow-x:auto; padding:16px 18px;
+  }
+  .codewrap pre{margin:0; font-family:var(--f-mono); font-size:12.5px; line-height:1.65; color:var(--rail-ink)}
+  .codewrap .c{color:var(--rail-dim)}
+  .codewrap .s{color:#9BD9C9}
+  .codewrap .k{color:#E8B341}
 
   .cmp{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); overflow-x:auto}
   table.cmp-t{min-width:600px; font-size:13.5px}
@@ -746,6 +760,61 @@
   </section>
 
   <section class="blk">
+    <h2>기존 메뉴가 어디로 가나</h2>
+    <p class="sub-l">
+      운영 화면(<code>k-haccp.btsi.co.kr</code>)에서 실제 메뉴를 그대로 받아 매핑했습니다.
+      <b>화면을 지우거나 새로 만들지 않습니다.</b> 있는 화면을 업무 흐름대로 다시 묶고 이름만 줄입니다.
+      신설은 <b>「오늘 할 일」</b> 하나, 통합은 <b>「일지 작성」</b> 하나뿐입니다.
+    </p>
+    <div class="cmp">
+      <table class="cmp-t"><tbody id="iaBody"></tbody></table>
+    </div>
+    <p class="sub-l" style="margin:14px 0 0">
+      메뉴 구성은 업체·요금제에 따라 다릅니다. 위 표는 확인한 계정 기준이며,
+      <b>묶는 원칙</b>(주기는 속성으로 · 기한 관리는 분리 · 접두어 제거)은 어느 구성에도 그대로 적용됩니다.
+    </p>
+  </section>
+
+  <section class="blk">
+    <h2>1차 시안에서 이어온 것</h2>
+    <p class="sub-l">v2는 1차 시안을 대체합니다. 아래는 1차에서 그대로 살아 있는 기능이고, 이 화면에서도 전부 동작합니다.</p>
+    <div class="cards">
+      <div class="card">
+        <h4>메뉴 정리</h4>
+        <ul>
+          <li>1단계를 <b>6개 그룹</b>으로 묶고 한 번에 한 그룹만 펼침</li>
+          <li>그룹 안에서 <b>접두어 제거</b> — 「CCP 이탈 이력」 → 「이탈 이력」</li>
+          <li><b>업무 순서대로</b> 재배열 — 작업제품 선택이 맨 위</li>
+          <li>매일 안 쓰는 <b>설정은 맨 아래</b>로</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>찾기와 표시</h4>
+        <ul>
+          <li><b>즐겨찾기 ★</b> — 항목에 마우스를 올려 별을 누르면 상단 고정</li>
+          <li><b>미처리 건수 배지</b> — 접힌 그룹은 합계로 표시</li>
+          <li><b>브레드크럼</b>과 화면별 주소를 상단에 표시</li>
+          <li><b>탭</b>으로 여러 화면을 열어둔 채 오가기</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>「오늘 할 일」</h4>
+        <ul>
+          <li>오늘 써야 할 일지 · 기한 임박 · CCP 이탈 · 재고 경고</li>
+          <li>줄을 누르면 <b>해당 입력 화면으로 직행</b></li>
+          <li>이번 v2에서 <b>일일/주간/월간 일지</b>가 여기에 함께 뜨도록 확장</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>개발자 전달용 정의</h2>
+    <p class="sub-l">메뉴 트리와, 이 구조가 돌아가려면 필요한 API 두 개입니다. 그대로 복사해 쓰실 수 있습니다.</p>
+    <div class="codewrap"><pre id="codeBlock"></pre></div>
+  </section>
+
+  <section class="blk">
     <h2>요청서에 어떻게 넣을까</h2>
     <p class="sub-l">네 가지를 한꺼번에 요청하면 “전부 어렵다”는 답을 받기 쉽습니다. 공수 순으로 쪼개는 편이 낫습니다.</p>
     <div class="cards">
@@ -850,6 +919,7 @@
 
   var state = {
     mode:'sidebar', open:'g-prod', flyout:null,
+    favs:{'p-logs':true, 'p-stock':true, 'p-devlist':true},
     tabs:['p-today'], panes:['p-today', null], focus:0,
     hist:[['p-today'],[]], hi:[0,-1],
     split:false, q:'',
@@ -918,8 +988,19 @@
     var b = document.createElement('button');
     b.type='button';
     b.className = 'leaf' + (state.panes[state.focus] === leaf.id ? ' on' : '');
-    b.innerHTML = '<span class="lf">'+leaf.label+'</span>' + (leaf.badge?'<span class="dot-n">'+leaf.badge+'</span>':'');
-    b.addEventListener('click', function(e){ open(leaf.id, {right: e.ctrlKey||e.metaKey}); });
+    b.innerHTML = '<span class="lf">'+leaf.label+'</span>' +
+      (leaf.badge?'<span class="dot-n">'+leaf.badge+'</span>':'') +
+      '<svg class="star'+(state.favs[leaf.id]?' fav':'')+'" viewBox="0 0 24 24" fill="'+
+      (state.favs[leaf.id]?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">' +
+      '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>';
+    b.addEventListener('click', function(e){
+      if(e.target.closest('.star')){
+        e.stopPropagation();
+        if(state.favs[leaf.id]) delete state.favs[leaf.id]; else state.favs[leaf.id] = true;
+        render(); return;
+      }
+      open(leaf.id, {right: e.ctrlKey||e.metaKey});
+    });
     return b;
   }
 
@@ -938,6 +1019,12 @@
 
   function fillSidebar(host){
     host.innerHTML = '';
+    var favIds = Object.keys(state.favs);
+    if(favIds.length){
+      var sf = document.createElement('div'); sf.className='sec-t'; sf.textContent='즐겨찾기';
+      host.appendChild(sf);
+      favIds.forEach(function(id){ if(IDX[id]) host.appendChild(leafBtn(IDX[id].leaf)); });
+    }
     var st = document.createElement('div'); st.className='sec-t'; st.textContent='전체 메뉴';
     host.appendChild(st);
     MENU.forEach(function(g){
@@ -1589,6 +1676,85 @@
   });
 
   render();
+
+  /* ---------------- IA 매핑표 ---------------- */
+  var IA = [
+    ['기록일지 관리 › <b>일일일지 · 주간일지 · 월간일지 · 연간일지</b>',
+     '기록일지 › 일지 작성',
+     '메뉴 4개를 화면 1개로. 주기는 필터로 고르며 <b>이름은 그대로</b> 씁니다'],
+    ['기록일지 관리 › 검교정일정 · 유효성평가 · 자가품질검사 · 보건증 · 입고성적서 · 교육훈련일지',
+     '인증·법정일정',
+     '일지가 아니라 <b>기한 관리 대상</b>이라 분리. 지금은 일지와 섞여 둘 다 안 보임'],
+    ['기록일지 관리 › CCP모니터링 일지관리 · 기타일지 관리',
+     '기록일지',
+     '성격이 같은 것끼리 남김. 결재함을 같은 그룹으로'],
+    ['원료수불/생산일지 (12개)',
+     '생산·원료',
+     '<b>작업제품선택을 맨 위로</b> 올려 실제 작업 순서대로 재배열'],
+    ['원료수불/생산일지 › 회수관리',
+     '(별건)',
+     '리콜 관리는 성격이 달라 별도 기능으로 분리 협의'],
+    ['CCP 제품 선택 · CCP 실적 · CCP모니터링',
+     'CCP 관리',
+     '흩어져 있던 CCP 화면을 한 그룹으로. 안에서는 「CCP」 접두어 제거'],
+    ['양식 설정 › 선행요건 양식 설정 · CCP 양식 관리 · CCP 양식 편집',
+     '설정 › 일지 서식 관리',
+     '<b>주기·기한·근거 항목을 추가</b> — 전체 구조의 전제'],
+    ['공통 관리 (16개)',
+     '설정',
+     '초기 세팅용이라 맨 아래로, 시각적으로도 약하게'],
+    ['(없음)',
+     '오늘 할 일',
+     '<b>신설</b> — 오늘 쓸 일지·기한 임박·CCP 이탈·재고 경고를 한 화면에']
+  ];
+  var iaHost = document.getElementById('iaBody');
+  if(iaHost){
+    iaHost.innerHTML = IA.map(function(r){
+      return '<tr><td class="w" style="width:38%;font-weight:400;color:var(--muted)">'+r[0]+'</td>' +
+             '<td style="width:4%;color:var(--accent);font-family:var(--f-mono);text-align:center">→</td>' +
+             '<td><b>'+r[1]+'</b><small>'+r[2]+'</small></td></tr>';
+    }).join('');
+  }
+
+  /* ---------------- 개발자 전달용 ---------------- */
+  var L = [];
+  L.push('<span class="c">// 1) 메뉴 트리 — path 는 화면별 주소, badge 는 미처리 건수 키</span>');
+  L.push('<span class="k">const</span> MENU = [');
+  MENU.forEach(function(g, gi){
+    L.push('  { id: <span class="s">"'+g.id+'"</span>, label: <span class="s">"'+g.label+'"</span>' +
+           (g.single ? ', single: true' : '') + ', children: [');
+    g.children.forEach(function(c, ci){
+      L.push('    { id: <span class="s">"'+c.id+'"</span>, label: <span class="s">"'+c.label+'"</span>, ' +
+             'path: <span class="s">"'+c.path+'"</span>' +
+             (c.badge ? ', badge: true' : '') + ' }' + (ci < g.children.length-1 ? ',' : ''));
+    });
+    L.push('  ]}' + (gi < MENU.length-1 ? ',' : ''));
+  });
+  L.push(']');
+  L.push('');
+  L.push('<span class="c">// 2) 일지 서식에 주기를 추가 — 이 필드가 있어야 나머지가 전부 자동으로 돕니다</span>');
+  L.push('POST /api/log-forms');
+  L.push('  {');
+  L.push('    <span class="s">"name"</span>:   <span class="s">"방충·방서 점검표"</span>,');
+  L.push('    <span class="s">"cycle"</span>:  <span class="s">"weekly"</span>,      <span class="c">// daily | weekly | monthly | quarterly | biannual | yearly | adhoc | event</span>');
+  L.push('    <span class="s">"weekday"</span>: 1,             <span class="c">// weekly 일 때 (0=일)</span>');
+  L.push('    <span class="s">"dayOfMonth"</span>: null,       <span class="c">// monthly / quarterly / yearly 일 때</span>');
+  L.push('    <span class="s">"due"</span>:    <span class="s">"same-day 18:00"</span>,');
+  L.push('    <span class="s">"owner"</span>:  <span class="s">"생산팀장"</span>,');
+  L.push('    <span class="s">"basis"</span>:  <span class="s">"선행요건 O-5"</span>,   <span class="c">// 심사 때 이 값으로 검색·일괄출력</span>');
+  L.push('    <span class="s">"keepYears"</span>: 2');
+  L.push('  }');
+  L.push('');
+  L.push('<span class="c">// 3) 오늘 할 일 — 배지·대시보드·알람이 같은 응답을 씁니다</span>');
+  L.push('GET /api/todo/summary?date=2026-08-19');
+  L.push('  <span class="c">→</span> {');
+  L.push('      <span class="s">"logs"</span>:    [ { <span class="s">"formId"</span>: 12, <span class="s">"name"</span>: <span class="s">"일반위생관리 및 공정점검표"</span>,');
+  L.push('                     <span class="s">"cycle"</span>: <span class="s">"daily"</span>, <span class="s">"due"</span>: <span class="s">"2026-08-19T18:00"</span>, <span class="s">"status"</span>: <span class="s">"todo"</span> } ],');
+  L.push('      <span class="s">"deadlines"</span>: [ { <span class="s">"type"</span>: <span class="s">"certRenewal"</span>, <span class="s">"dday"</span>: -47 } ],');
+  L.push('      <span class="s">"badges"</span>:   { <span class="s">"p-logs"</span>: 4, <span class="s">"p-devlist"</span>: 2, <span class="s">"p-appr"</span>: 3 }');
+  L.push('    }');
+  var cb = document.getElementById('codeBlock');
+  if(cb) cb.innerHTML = L.join('\n');
 })();
 </script>
 </body>
