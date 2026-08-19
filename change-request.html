@@ -237,24 +237,69 @@
   <div class="req">
     <div class="req-h">
       <span class="num">01</span>
-      <h3>화면마다 고유 주소 부여</h3>
+      <h3>메뉴 링크를 실제 주소로</h3>
       <span class="pri a">필수</span>
     </div>
     <div class="rows">
       <div class="row now">
         <div class="lab">지금</div>
-        <p class="val">메뉴를 눌러도 주소창이 바뀌지 않습니다. 그래서 새로고침(F5)하면 첫 화면으로 돌아가고, 특정 화면을 즐겨찾기하거나 링크로 공유할 수 없습니다.</p>
+        <p class="val">
+          화면마다 주소는 이미 있습니다(<code>/pre_rec_mgmt/P0070/P0070_main.do?menuId=M016P0001</code>).
+          그런데 <strong>좌측 메뉴 링크가 <code>href="javaScript:subMenu_on(...)"</code></strong> 형태여서,
+          <strong>Ctrl+클릭·가운데 클릭·우클릭 “새 탭에서 열기”가 전부 동작하지 않습니다.</strong>
+          현장 발언 <b>“화면이 옆으로 열리지 않는다”</b>가 여기서 나옵니다.
+        </p>
       </div>
       <div class="row ask">
         <div class="lab">요청</div>
-        <p class="val">2단계 메뉴 화면마다 <strong>서로 다른 주소</strong>를 부여해 주세요.</p>
+        <p class="val">
+          메뉴 <code>&lt;a&gt;</code>의 <code>href</code>에 <strong>실제 주소를 넣어</strong> 주세요.
+          이동 동작은 지금처럼 스크립트로 처리하되(<code>onclick</code>에서 <code>preventDefault</code>),
+          <code>href</code>만 진짜 주소면 브라우저 기본 기능이 그대로 살아납니다.
+        </p>
       </div>
       <div class="row">
         <div class="lab">확인 방법</div>
         <div class="val"><ul>
-          <li>육안검사일지와 재고현황의 주소가 서로 다르다</li>
-          <li>재고현황 주소를 복사해 새 창에 붙여넣으면 재고현황이 바로 열린다</li>
-          <li>F5로 새로고침해도 보고 있던 화면이 유지된다</li>
+          <li>「재고현황」을 <b>Ctrl+클릭</b>하면 새 탭에서 재고현황이 열린다</li>
+          <li>메뉴에 <b>우클릭 → “새 탭에서 열기”</b> 항목이 나타난다</li>
+          <li>메뉴에 마우스를 올리면 브라우저 하단에 주소가 표시된다</li>
+        </ul></div>
+      </div>
+    </div>
+    <p class="alt">
+      <b>가장 적은 공수로 가장 큰 효과</b>가 나는 항목입니다.
+      화면을 새로 만들 필요 없이 <b>링크 속성만 바꾸면</b> 새 탭·즐겨찾기·링크 공유가 한꺼번에 열립니다.
+    </p>
+  </div>
+
+  <div class="req">
+    <div class="req-h">
+      <span class="num">02</span>
+      <h3>화면 안에 뒤로가기와 현재 위치</h3>
+      <span class="pri b">권장</span>
+    </div>
+    <div class="rows">
+      <div class="row now">
+        <div class="lab">지금</div>
+        <p class="val">
+          브라우저 뒤로가기는 동작합니다. 다만 <strong>화면 안에 뒤로가기 버튼도, 현재 위치 표시도 없어</strong>
+          사용자는 홈으로 나갔다가 메뉴를 처음부터 다시 찾습니다.
+          지금 어느 메뉴 안에 있는지도 화면에 적혀 있지 않습니다.
+        </p>
+      </div>
+      <div class="row ask">
+        <div class="lab">요청</div>
+        <p class="val">
+          화면 상단에 <strong>← 뒤로</strong> 버튼과 <strong>현재 위치</strong>(기록일지 › 일일일지)를 넣어 주세요.
+          경로의 상위를 누르면 그 그룹으로 이동합니다.
+        </p>
+      </div>
+      <div class="row">
+        <div class="lab">확인 방법</div>
+        <div class="val"><ul>
+          <li>일일일지 화면 상단에 “기록일지 › 일일일지”가 보인다</li>
+          <li>← 버튼을 누르면 직전 화면으로 돌아온다</li>
         </ul></div>
       </div>
     </div>
@@ -262,27 +307,41 @@
 
   <div class="req">
     <div class="req-h">
-      <span class="num">02</span>
-      <h3>뒤로가기와 현재 위치 표시</h3>
+      <span class="num">02-B</span>
+      <h3>일일·주간·월간·연간 일지를 한 화면으로</h3>
       <span class="pri a">필수</span>
     </div>
     <div class="rows">
       <div class="row now">
         <div class="lab">지금</div>
-        <p class="val">직전 화면으로 돌아갈 방법이 없어, 매번 홈으로 나갔다가 메뉴를 처음부터 다시 찾아 들어가야 합니다.</p>
+        <p class="val">
+          「기록일지 관리」 안에 <strong>일일일지 · 주간일지 · 월간일지 · 연간일지</strong>가 각각 별도 메뉴로 있습니다.
+          <strong>주기는 시스템이 아는 정보인데 사용자가 대신 판단</strong>하고 있습니다.
+          실무자는 “오늘 뭘 써야 하지”로 생각하지 “주간 메뉴로 가야지”로 생각하지 않습니다.
+          여기에 <b>검교정일정·유효성평가·자가품질검사·보건증·입고성적서</b>까지 같은 곳에 섞여 12개가 나열돼 있습니다.
+        </p>
       </div>
       <div class="row ask">
         <div class="lab">요청</div>
-        <p class="val">화면 상단에 <strong>← 뒤로 / → 앞으로</strong> 버튼과 <strong>현재 위치 경로</strong>(홈 › 원료수불 › 육안검사일지)를 넣어 주세요. 경로의 상위 항목을 누르면 그 메뉴로 이동합니다.</p>
+        <div class="val"><ul>
+          <li>네 메뉴를 <strong>「일지 작성」 하나로 합치고, 주기는 화면 안 필터</strong>(오늘/일일/주간/월간/연간)로</li>
+          <li>기본값은 <strong>“오늘 써야 할 것”</strong> — 주기 계산은 시스템이 수행</li>
+          <li>각 행에 <strong>미작성 / 작성완료 / 결재대기</strong> 상태 표시</li>
+          <li>일지가 아닌 <strong>검교정·유효성평가·자가품질검사·보건증</strong>은 기한 관리 성격이므로 <b>07번(법정 일정)</b>으로 이동</li>
+        </ul></div>
       </div>
       <div class="row">
         <div class="lab">확인 방법</div>
         <div class="val"><ul>
-          <li>육안검사일지 → 재고현황으로 이동한 뒤 뒤로가기를 누르면 육안검사일지로 돌아온다</li>
-          <li>브라우저 자체의 뒤로가기 버튼도 똑같이 동작한다</li>
+          <li>월요일에 들어가면 주간일지가 “오늘 써야 할 것”에 함께 나온다</li>
+          <li>월초에 들어가면 월간일지가 함께 나온다</li>
+          <li>필터를 “월간”으로 바꾸면 월간 대상만 남는다</li>
         </ul></div>
       </div>
     </div>
+    <p class="alt">
+      동작하는 화면은 <a href="menu-proposal-v2.html">시안 v2</a>의 「기록일지 › 일지 작성」에서 눌러보실 수 있습니다.
+    </p>
   </div>
 
   <div class="req">
