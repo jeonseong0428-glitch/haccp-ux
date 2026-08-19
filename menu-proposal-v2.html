@@ -195,6 +195,8 @@
   .leaf:hover{background:var(--rail-2); color:var(--rail-ink)}
   .leaf.on{background:var(--accent); color:var(--accent-ink); font-weight:500}
   .leaf .lf{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .leaf .ali{font-size:10px; color:var(--rail-dim); flex:none; font-family:var(--f-mono)}
+  .leaf.on .ali{color:var(--accent-ink)}
   .leaf .star{width:15px; height:15px; flex:none; opacity:0; color:var(--rail-dim); transition:.12s}
   .leaf:hover .star{opacity:1}
   .leaf .star.fav{opacity:1; color:#E8B341}
@@ -345,6 +347,16 @@
     padding:11px 14px; margin-bottom:12px; font-size:13px; color:var(--ink-2); line-height:1.6;
   }
   .movedbox b{color:var(--accent); font-weight:600}
+  .nextbox{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:var(--r);
+    padding:11px 14px; margin-bottom:13px;
+  }
+  .nextbox .nk{
+    font-family:var(--f-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); flex:none;
+  }
+  .nextbox .nw{flex:1; min-width:180px; font-size:13.5px; color:var(--ink-2); line-height:1.55}
   .chips{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:13px}
   .chip{
     display:inline-flex; align-items:center; gap:7px; font-family:var(--f-ui); font-size:13px;
@@ -760,6 +772,81 @@
   </section>
 
   <section class="blk">
+    <h2>같은 화면이 두 곳에 필요할 때 — 육안검사일지</h2>
+    <p class="sub-l">
+      「육안검사일지」는 <b>원료수불/생산일지</b> 아래 있는데,
+      시스템 내부 ID는 <code>M016P0010</code>(기록일지 관리)이고 화면 경로도 <code>/pre_rec_mgmt/P0060/</code>입니다.
+      <b>ID는 일지, 위치는 생산</b> — 시스템 자신도 두 곳 사이에서 흔들리고 있습니다.
+    </p>
+
+    <div class="cards" style="margin-bottom:14px">
+      <div class="card">
+        <span class="q">생산 메뉴에 있어야 하는 이유</span>
+        <h4>작업은 입고에 붙어 있다</h4>
+        <ul>
+          <li>입고 직후에 하는 일 — <b>입고등록 → 육안검사</b>가 한 흐름</li>
+          <li>LOT 단위로 <b>입고 건에 붙는</b> 기록</li>
+          <li>작성하는 사람이 <b>입고 담당자</b></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="q">기록일지에 있어야 하는 이유</span>
+        <h4>관리는 일지로 받는다</h4>
+        <ul>
+          <li>형식상 <b>선행요건 기록</b>(P0060)</li>
+          <li>심사 때 <b>일지로 제출</b>됨</li>
+          <li><b>미작성 판정·이행률</b> 계산 대상이어야 함</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="q">결론 — 옮기지 않습니다</span>
+        <h4>자리는 그대로, 집계만 붙인다</h4>
+        <p>
+          쓰는 사람이 찾는 자리는 <b>지금 위치가 맞습니다.</b> 옮기면 오히려 혼란이 됩니다.
+          바꿔야 할 것은 위치가 아니라 <b>이 화면이 일지로 집계되지 않는다는 점</b>입니다.
+        </p>
+        <ul>
+          <li><b>「생산·원료」에 그대로 둠</b> — 정본 위치</li>
+          <li>「기록일지」에는 <b>바로가기(↗)</b>로만 노출</li>
+          <li>주기는 <b>「이벤트 — 입고 시」</b>로 등록해 미작성·이행률에 포함</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cmp">
+      <table class="cmp-t">
+        <tbody>
+          <tr>
+            <td class="w">진짜 해법은 메뉴가 아닙니다<small>「메뉴 들어갔을 때 어떤 버튼을 눌러야 하는지 모름」</small></td>
+            <td colspan="3">
+              <b>입고등록 화면에서 바로 이어서 쓰게 하는 것</b>이 답입니다.
+              입고를 저장하면 그 자리에 <b>「육안검사 작성 →」</b> 버튼이 뜨고, 검사 대기 건수가 함께 보입니다.
+              <small>
+                그러면 “육안검사일지가 어느 메뉴에 있는가”라는 질문 자체가 사라집니다.
+                시안의 <b>「생산·원료 › 원재료 입고등록」</b>에서 직접 눌러보실 수 있습니다.
+              </small>
+            </td>
+          </tr>
+          <tr>
+            <td class="w">같은 규칙을 적용할 다른 항목</td>
+            <td><b>입고성적서 관리</b><small>기록일지에 있으나 입고 흐름에 붙음</small></td>
+            <td><b>교육훈련일지</b><small>기록일지에 있으나 기한 관리 성격</small></td>
+            <td><b>검교정일정 관리</b><small>일지가 아니라 일정</small></td>
+          </tr>
+          <tr>
+            <td class="w">원칙<small>메뉴에 같은 화면이 두 번 나오는 것 자체는 문제가 아닙니다</small></td>
+            <td colspan="3">
+              <span class="yes">정본은 한 곳</span> — 주소·브레드크럼·집계의 기준<br>
+              <span class="yes">나머지는 바로가기(↗)</span> — 같은 화면임이 보이게 표시<br>
+              <span class="no">피해야 할 것</span> — 두 곳의 목록이 서로 <b>달라 보이는 것</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="blk">
     <h2>기존 메뉴가 어디로 가나</h2>
     <p class="sub-l">
       운영 화면(<code>k-haccp.btsi.co.kr</code>)에서 실제 메뉴를 그대로 받아 매핑했습니다.
@@ -885,6 +972,7 @@
     ]},
     {id:'g-log', label:'기록일지', icon:'cal', children:[
       {id:'p-logs',   label:'일지 작성', path:'/logs', badge:4},
+      {id:'p-visual', label:'육안검사일지', path:'/production/inspection', badge:2, alias:true},
       {id:'p-ccplog', label:'CCP 모니터링 일지', path:'/logs/ccp'},
       {id:'p-etclog', label:'기타일지', path:'/logs/etc'},
       {id:'p-appr',   label:'결재·승인 현황', path:'/logs/approval', badge:3}
@@ -913,8 +1001,10 @@
     {id:'a-setup',  label:'일지 주기 설정하기',     icon:'doc',  run:function(){ open('p-logtpl'); }}
   ];
 
+  /* 정본(canonical)만 IDX에 등록 — 바로가기(alias)는 위치만 빌려온 것이므로
+     브레드크럼·주소는 정본 기준으로 표시된다 */
   var IDX = {};
-  MENU.forEach(function(g){ g.children.forEach(function(c){ IDX[c.id] = {leaf:c, group:g}; }); });
+  MENU.forEach(function(g){ g.children.forEach(function(c){ if(!c.alias) IDX[c.id] = {leaf:c, group:g}; }); });
   IDX['p-form'] = {leaf:{id:'p-form', label:'육안검사일지 작성', path:'/production/inspection/new'}, group:MENU[1]};
 
   var state = {
@@ -987,8 +1077,10 @@
   function leafBtn(leaf){
     var b = document.createElement('button');
     b.type='button';
-    b.className = 'leaf' + (state.panes[state.focus] === leaf.id ? ' on' : '');
+    b.className = 'leaf' + (state.panes[state.focus] === leaf.id ? ' on' : '') + (leaf.alias ? ' alias' : '');
+    if(leaf.alias && IDX[leaf.id]) b.title = '바로가기 — 정본은 「' + IDX[leaf.id].group.label + '」에 있습니다';
     b.innerHTML = '<span class="lf">'+leaf.label+'</span>' +
+      (leaf.alias?'<span class="ali" aria-label="바로가기">↗</span>':'') +
       (leaf.badge?'<span class="dot-n">'+leaf.badge+'</span>':'') +
       '<svg class="star'+(state.favs[leaf.id]?' fav':'')+'" viewBox="0 0 24 24" fill="'+
       (state.favs[leaf.id]?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">' +
@@ -1147,6 +1239,24 @@
         ['포장 필름 — 안전재고 미만','p-stock','12 / 15 롤']
       ]}
     ]},
+    'p-in':{desc:'입고된 원재료의 수량·시험성적서를 등록합니다.', cta:'입고 등록',
+      next:{to:'p-form', label:'육안검사 작성', why:'입고 2건이 검사 대기 중입니다 — 메뉴로 나가지 않고 여기서 이어서 씁니다.'},
+      stats:[['오늘 입고','7 건'],['검사 대기','2 건','crit'],['이번 주','31 건']],
+      cols:['입고일자','원재료명','거래처','LOT','수량','육안검사'],
+      rows:[
+        ['2026-08-19','정제소금','대성물산','L-2608-114','40 kg',['ok','완료']],
+        ['2026-08-19','고춧가루(국산)','한울농산','L-2608-113','120 kg',['crit','미작성']],
+        ['2026-08-19','정제수','자체','L-2608-115','1,000 L',['crit','미작성']],
+        ['2026-08-18','마늘 페이스트','청림식품','L-2608-110','60 kg',['ok','완료']]
+      ]},
+    'p-visual':{desc:'입고 원재료의 이물·변색·포장상태 기록입니다. 입고 건마다 작성합니다.', cta:'검사 등록',
+      stats:[['오늘 검사','9 건'],['미작성','2 건','crit'],['적합률','98.2 %','ok']],
+      cols:['검사일시','품목','LOT','이물','변색','판정','검사자'],
+      rows:[
+        ['08-19 09:12','정제소금','L-2608-114','없음','없음',['ok','적합'],'이지은'],
+        ['08-19 09:26','고춧가루(국산)','L-2608-113','—','—',['crit','미작성'],'—'],
+        ['08-18 14:05','마늘 페이스트','L-2608-110','없음','없음',['ok','적합'],'박현수']
+      ]},
     'p-stock':{desc:'현재 재고와 유효기간입니다.', cta:'재고 실사',
       stats:[['품목 수','48'],['유효기간 임박','3','crit'],['안전재고 미만','2','crit']],
       cols:['품목','현재고','안전재고','유효기간','상태'],
@@ -1519,7 +1629,13 @@
     p.stats.forEach(function(x){
       s += '<div class="stat '+(x[2]||'')+'"><div class="k">'+esc(x[0])+'</div><div class="v">'+esc(x[1])+'</div></div>';
     });
-    s += '</div><div class="tablewrap"><table><thead><tr>';
+    s += '</div>';
+    if(p.next){
+      s += '<div class="nextbox"><span class="nk">다음 단계</span>' +
+           '<span class="nw">'+esc(p.next.why)+'</span>' +
+           '<button class="btn" type="button" data-next="'+p.next.to+'">'+esc(p.next.label)+' →</button></div>';
+    }
+    s += '<div class="tablewrap"><table><thead><tr>';
     p.cols.forEach(function(c){ s += '<th>'+esc(c)+'</th>'; });
     s += '</tr></thead><tbody>';
     p.rows.forEach(function(r){
@@ -1530,6 +1646,10 @@
       s += '</tr>';
     });
     host.innerHTML = s + '</tbody></table></div>';
+    var nb = host.querySelector('[data-next]');
+    if(nb) nb.addEventListener('click', function(e){
+      open(nb.getAttribute('data-next'), {right:e.ctrlKey||e.metaKey});
+    });
   }
 
   function buildPane(i){
@@ -1688,6 +1808,9 @@
     ['기록일지 관리 › CCP모니터링 일지관리 · 기타일지 관리',
      '기록일지',
      '성격이 같은 것끼리 남김. 결재함을 같은 그룹으로'],
+    ['원료수불/생산일지 › <b>육안검사일지</b> <span style="font-size:11.5px">(ID는 M016, 위치는 M100)</span>',
+     '생산·원료 (그대로)',
+     '<b>옮기지 않습니다.</b> 쓰는 사람이 찾는 자리가 맞습니다. 기록일지에는 바로가기(↗)로만 노출하고, 주기를 「이벤트 — 입고 시」로 등록해 집계에 포함'],
     ['원료수불/생산일지 (12개)',
      '생산·원료',
      '<b>작업제품선택을 맨 위로</b> 올려 실제 작업 순서대로 재배열'],
