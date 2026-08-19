@@ -611,11 +611,11 @@
       {id:'p-eq',     label:'설비 관리', path:'/ccp/equipment'},
       {id:'p-tab',    label:'태블릿 관리', path:'/ccp/tablet'}
     ]},
-    {id:'g-hyg', label:'위생·일지', icon:'cal', path:'/hygiene', children:[
-      {id:'p-hacday', label:'일일 위생점검', path:'/hygiene/daily', badge:1},
-      {id:'p-hacclr', label:'세척·소독 일지', path:'/hygiene/sanitation'},
-      {id:'p-hacedu', label:'교육 일지', path:'/hygiene/education'},
-      {id:'p-appr',   label:'결재·승인 현황', path:'/hygiene/approval', badge:3}
+    {id:'g-log', label:'기록일지', icon:'cal', path:'/logs', children:[
+      {id:'p-logs',   label:'일지 작성', path:'/logs', badge:4},
+      {id:'p-ccplog', label:'CCP 모니터링 일지', path:'/logs/ccp'},
+      {id:'p-etclog', label:'기타일지', path:'/logs/etc'},
+      {id:'p-appr',   label:'결재·승인 현황', path:'/logs/approval', badge:3}
     ]},
     {id:'g-cert', label:'인증·법정일정', icon:'shield', path:'/compliance', children:[
       {id:'p-sched',  label:'점검 일정', path:'/compliance/schedule', badge:2},
@@ -641,7 +641,11 @@
     ['원료수불/생산일지', '생산·원료', '업무 순서대로 재배열, 「작업제품 선택」을 맨 위로'],
     ['CCP 모니터링 · CCP 이탈 이력 · CCP 데이터 관리 · CCP 설비 관리 · CCP 태블릿 · 스마트 HACCP CCP 모니터링 일지관리',
      'CCP 관리', '6개를 한 그룹으로. 안에서는 「CCP」 접두어 제거'],
-    ['HACCP 관리 일지 · 기록일지 관리', '위생·일지', '일지 성격끼리 통합, 결재 현황을 같이 둠'],
+    ['일일일지 · 주간일지 · 월간일지 · 연간일지', '기록일지 › 일지 작성',
+     '메뉴를 주기로 쪼개지 않고 한 화면으로. 주기는 화면 안 필터(일일일지/주간일지/…)로 고름'],
+    ['HACCP 관리 일지 · 기타일지 관리', '기록일지', '일지 성격끼리 통합, 결재 현황을 같이 둠'],
+    ['검교정일정 · 유효성평가 · 자가품질검사 · 보건증 · 입고성적서', '인증·법정일정',
+     '일지가 아니라 기한 관리 대상이므로 분리'],
     ['기초등록 · 공통 관리', '설정', '초기 세팅용이므로 맨 아래로, 시각적으로도 약하게']
   ];
 
@@ -651,7 +655,8 @@
       {t:'미작성 일지', n:4, tone:'crit', rows:[
         ['육안검사일지 — 고춧가루 L-2608-113','p-visual','오늘 09:26 입고'],
         ['생산일지 — 완제품 B(1kg)','p-prod','배치 B-2608-23'],
-        ['일일 위생점검 — 2공정','p-hacday','작성 기한 18:00'],
+        ['일일일지 — 일반위생관리 점검','p-logs','매일 · 기한 18:00'],
+        ['주간일지 — 방충·방서 점검','p-logs','오늘이 작성일(월)'],
         ['육안검사일지 — 정제수 L-2608-115','p-visual','오늘 11:04 입고']
       ]},
       {t:'CCP 이탈 미조치', n:2, tone:'crit', rows:[
@@ -1060,7 +1065,7 @@
   lines.push('<span class="c">// 미처리 건수 — 배지·「오늘 할 일」이 같은 응답을 씁니다</span>');
   lines.push('GET /api/todo/summary');
   lines.push('  <span class="c">→</span> { <span class="s">"p-visual"</span>: 2, <span class="s">"p-prod"</span>: 1, <span class="s">"p-devlist"</span>: 2,');
-  lines.push('      <span class="s">"p-hacday"</span>: 1, <span class="s">"p-appr"</span>: 3 }');
+  lines.push('      <span class="s">"p-logs"</span>: 4, <span class="s">"p-appr"</span>: 3 }');
   $('codeBlock').innerHTML = lines.join('\n');
 })();
 </script>

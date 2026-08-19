@@ -335,6 +335,11 @@
   .drow .dm{font-family:var(--f-mono); font-size:11px; color:var(--muted); flex:none}
 
   /* ---- period chips ---- */
+  .movedbox{
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:var(--r);
+    padding:11px 14px; margin-bottom:12px; font-size:13px; color:var(--ink-2); line-height:1.6;
+  }
+  .movedbox b{color:var(--accent); font-weight:600}
   .chips{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:13px}
   .chip{
     display:inline-flex; align-items:center; gap:7px; font-family:var(--f-ui); font-size:13px;
@@ -835,7 +840,8 @@
   var ACTIONS = [
     {id:'a-split',  label:'분할 화면 켜기 / 끄기', icon:'bolt', run:function(){ toggleSplit(); }},
     {id:'a-mode',   label:'아이콘 레일로 전환',    icon:'bolt', run:function(){ setMode(state.mode==='rail'?'sidebar':'rail'); }},
-    {id:'a-form',   label:'육안검사일지 새로 작성', icon:'doc',  run:function(){ open('p-form'); }}
+    {id:'a-form',   label:'육안검사일지 새로 작성', icon:'doc',  run:function(){ open('p-form'); }},
+    {id:'a-setup',  label:'일지 주기 설정하기',     icon:'doc',  run:function(){ open('p-logtpl'); }}
   ];
 
   var IDX = {};
@@ -1113,6 +1119,16 @@
   ];
   var LOGSTATE = {f:'오늘'};
   var SLABEL = {todo:['crit','미작성'], done:['ok','작성완료'], appr:['warn','결재대기'], wait:['', '예정']};
+  /* 칩 라벨은 기존 메뉴 이름을 그대로 씁니다 — 사용자가 쓰던 단어를 지우지 않기 위해 */
+  var CHIPS = [
+    {k:'오늘', l:'오늘 할 일'},
+    {k:'전체', l:'전체'},
+    {k:'일일', l:'일일일지'},
+    {k:'주간', l:'주간일지'},
+    {k:'월간', l:'월간일지'},
+    {k:'연간', l:'연간일지'},
+    {k:'수시', l:'수시'}
+  ];
 
   function renderLogs(host){
     var f = LOGSTATE.f;
@@ -1133,10 +1149,13 @@
       '<div class="stat ok"><div class="k">이번 달 이행률</div><div class="v">92 %</div></div>' +
       '</div>';
 
+    h += '<div class="movedbox"><b>기존 「일일일지 · 주간일지 · 월간일지 · 연간일지」 메뉴가 여기로 합쳐졌습니다.</b> ' +
+         '메뉴를 4개로 나누는 대신, 아래 버튼으로 골라 보세요. 이름은 쓰시던 그대로입니다.</div>';
+
     h += '<div class="chips" role="group" aria-label="주기 필터">';
-    ['오늘','전체','일일','주간','월간','연간','수시'].forEach(function(c){
-      var n = c==='오늘' ? todo : (c==='전체' ? LOGS.length : LOGS.filter(function(x){return x.c===c;}).length);
-      h += '<button class="chip'+(f===c?' on':'')+'" type="button" data-f="'+c+'">'+c+
+    CHIPS.forEach(function(c){
+      var n = c.k==='오늘' ? todo : (c.k==='전체' ? LOGS.length : LOGS.filter(function(x){return x.c===c.k;}).length);
+      h += '<button class="chip'+(f===c.k?' on':'')+'" type="button" data-f="'+c.k+'">'+c.l+
            '<span class="cn">'+n+'</span></button>';
     });
     h += '</div>';
@@ -1162,6 +1181,115 @@
     host.innerHTML = h;
     Array.prototype.forEach.call(host.querySelectorAll('.chip'), function(b){
       b.addEventListener('click', function(){ LOGSTATE.f = b.getAttribute('data-f'); renderLogs(host); });
+    });
+  }
+
+  /* ---- 일지 서식 등록 (주기 지정) ---- */
+  var SETUP = {name:'방충·방서 점검표', cycle:'주간', wd:1, dom:1, mon:3, due:'당일 18:00', who:'생산팀장', basis:'선행요건 O-5', keep:'2년'};
+  var WD = ['일','월','화','수','목','금','토'];
+  var BASE = new Date(2026, 7, 19); // 2026-08-19 (수)
+
+  function fmt(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+' ('+WD[d.getDay()]+')'; }
+
+  function nextDates(){
+    var s = SETUP, out = [], d, i;
+    if(s.cycle === '일일'){
+      for(i=0;i<3;i++){ d = new Date(BASE); d.setDate(d.getDate()+i); out.push(fmt(d)); }
+    } else if(s.cycle === '주간'){
+      d = new Date(BASE);
+      while(d.getDay() !== Number(s.wd)) d.setDate(d.getDate()+1);
+      for(i=0;i<3;i++){ out.push(fmt(d)); d = new Date(d); d.setDate(d.getDate()+7); }
+    } else if(s.cycle === '월간'){
+      d = new Date(BASE.getFullYear(), BASE.getMonth(), Number(s.dom));
+      if(d < BASE) d.setMonth(d.getMonth()+1);
+      for(i=0;i<3;i++){ out.push(fmt(d)); d = new Date(d); d.setMonth(d.getMonth()+1); }
+    } else if(s.cycle === '분기'){
+      for(i=0;i<3;i++){ d = new Date(BASE.getFullYear(), Math.floor(BASE.getMonth()/3)*3 + 3*(i+1), Number(s.dom)); out.push(fmt(d)); }
+    } else if(s.cycle === '연간'){
+      d = new Date(BASE.getFullYear(), Number(s.mon)-1, Number(s.dom));
+      if(d < BASE) d.setFullYear(d.getFullYear()+1);
+      for(i=0;i<3;i++){ out.push(fmt(d)); d = new Date(d); d.setFullYear(d.getFullYear()+1); }
+    } else {
+      return null;
+    }
+    return out;
+  }
+
+  function renderSetup(host){
+    var s = SETUP;
+    var h = '<div class="page-h"><div><h3>일지 서식 관리</h3>' +
+      '<div class="sub-t">여기서 <b>주기</b>를 지정해야 「일지 작성」 화면이 “오늘 써야 할 것”을 계산할 수 있습니다.</div></div>' +
+      '<button class="btn" type="button">+ 새 일지 등록</button></div>';
+
+    h += '<div class="movedbox"><b>이 화면이 전체 구조의 전제입니다.</b> ' +
+         '지금은 「선행요건 양식 설정」에서 <b>항목만</b> 정할 수 있고 주기는 정할 수 없습니다. ' +
+         '그래서 주기가 메뉴(일일일지·주간일지…)에 박혀 있고, 기타일지로 만든 것은 관리에서 빠집니다.</div>';
+
+    h += '<div class="form" style="margin-bottom:14px"><div class="fgrid">';
+    h += '<div class="fld"><label>일지명</label><input type="text" data-s="name" value="'+esc(s.name)+'"></div>';
+
+    h += '<div class="fld"><label>주기 <span class="req">*</span></label><select data-s="cycle">';
+    ['일일','주간','월간','분기','반기','연간','수시','이벤트'].forEach(function(c){
+      h += '<option'+(s.cycle===c?' selected':'')+'>'+c+'</option>';
+    });
+    h += '</select></div>';
+
+    if(s.cycle === '주간'){
+      h += '<div class="fld"><label>작성 요일</label><select data-s="wd">';
+      WD.forEach(function(w,i){ h += '<option value="'+i+'"'+(Number(s.wd)===i?' selected':'')+'>'+w+'요일</option>'; });
+      h += '</select></div>';
+    } else if(s.cycle === '월간' || s.cycle === '분기'){
+      h += '<div class="fld"><label>작성 일자</label><select data-s="dom">';
+      [1,5,10,15,20,25].forEach(function(d){ h += '<option value="'+d+'"'+(Number(s.dom)===d?' selected':'')+'>매월 '+d+'일</option>'; });
+      h += '</select></div>';
+    } else if(s.cycle === '연간'){
+      h += '<div class="fld"><label>작성 월</label><select data-s="mon">';
+      for(var m=1;m<=12;m++) h += '<option value="'+m+'"'+(Number(s.mon)===m?' selected':'')+'>'+m+'월</option>';
+      h += '</select></div>';
+    }
+
+    h += '<div class="fld"><label>기한</label><select data-s="due">';
+    ['당일 18:00','익일까지','해당 주 내','해당 월 내'].forEach(function(d){
+      h += '<option'+(s.due===d?' selected':'')+'>'+d+'</option>';
+    });
+    h += '</select></div>';
+    h += '<div class="fld"><label>담당</label><input type="text" data-s="who" value="'+esc(s.who)+'"></div>';
+    h += '<div class="fld"><label>근거 <span class="rule">기준서 항목</span></label><input type="text" data-s="basis" value="'+esc(s.basis)+'"></div>';
+    h += '<div class="fld"><label>보존기간</label><select data-s="keep">';
+    ['1년','2년','3년'].forEach(function(k){ h += '<option'+(s.keep===k?' selected':'')+'>'+k+'</option>'; });
+    h += '</select></div>';
+    h += '</div>';
+
+    var nd = nextDates();
+    h += '<div class="banner ok show" style="margin:16px 0 0">';
+    if(nd){
+      h += '<b>이 설정이면 시스템이 이렇게 동작합니다</b><ul>' +
+           '<li>다음 작성 대상: <b>'+nd.join(' · ')+'</b></li>' +
+           '<li>기한(<b>'+esc(s.due)+'</b>)이 지나면 「오늘 할 일」에 <b>미작성</b>으로 표시</li>' +
+           '<li>「일지 작성」 화면의 <b>'+esc(s.cycle==='일일'?'일일일지':(s.cycle==='주간'?'주간일지':(s.cycle==='월간'?'월간일지':(s.cycle==='연간'?'연간일지':s.cycle))))+'</b> 필터에 포함</li>' +
+           '<li>심사 때 근거 <b>'+esc(s.basis)+'</b>로 검색·일괄 출력 가능</li></ul>';
+    } else {
+      h += '<b>「'+esc(s.cycle)+'」는 정해진 날짜가 없습니다</b><ul>' +
+           '<li>자동 생성 대신 <b>사건이 생길 때</b> 작성합니다 (입고 시·클레임 발생 시 등)</li>' +
+           '<li>미작성 판정을 하지 않으므로 <b>이행률 분모에서 제외</b>됩니다</li>' +
+           '<li>지금 「기타일지」에 몰아넣은 것들이 대부분 여기에 해당합니다</li></ul>';
+    }
+    h += '</div></div>';
+
+    h += '<div class="tablewrap"><table><thead><tr><th>일지명</th><th>주기</th><th>기한</th><th>담당</th><th>근거</th><th>사용</th></tr></thead><tbody>';
+    LOGS.slice(0,6).forEach(function(r){
+      h += '<tr><td>'+esc(r.n)+'</td><td>'+esc(r.c)+'</td><td>'+esc(r.due)+'</td><td>'+esc(r.w)+'</td>' +
+           '<td style="color:var(--muted)">'+esc(r.b)+'</td><td><span class="pill ok">사용</span></td></tr>';
+    });
+    h += '</tbody></table></div>';
+
+    host.innerHTML = h;
+    Array.prototype.forEach.call(host.querySelectorAll('[data-s]'), function(el){
+      var ev = el.tagName === 'SELECT' ? 'change' : 'input';
+      el.addEventListener(ev, function(){
+        SETUP[el.getAttribute('data-s')] = el.value;
+        renderSetup(host);
+      });
     });
   }
 
@@ -1280,6 +1408,7 @@
   function renderContent(host, pid){
     if(pid === 'p-form'){ renderForm(host); return; }
     if(pid === 'p-logs'){ renderLogs(host); return; }
+    if(pid === 'p-logtpl'){ renderSetup(host); return; }
     var p = PAGES[pid];
     if(p && p.type === 'dash'){
       var h = '<div class="page-h"><div><h3>오늘 할 일</h3>' +
